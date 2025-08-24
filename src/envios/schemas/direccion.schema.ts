@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type DireccionDocument = Direccion & Document;
 
-@Schema({ timestamps: true, toJSON: { virtuals: true } })
+@Schema({ collection: 'direcciones', timestamps: true, toJSON: { virtuals: true } })
 export class Direccion {
   @Prop({ required: true })
   calle: string;

@@ -8,7 +8,7 @@ import { Transportista, TransportistaSchema } from './schemas/transportista.sche
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Direccion.name, schema: DireccionSchema },
+  { name: Direccion.name, schema: DireccionSchema },
       { name: Transportista.name, schema: TransportistaSchema },
     ]),
   ],

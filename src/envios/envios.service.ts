@@ -11,7 +11,7 @@ import { UpdateTransportistaDto } from './dto/update-transportista.dto';
 @Injectable()
 export class EnviosService {
   constructor(
-    @InjectModel(Direccion.name) private direccionModel: Model<DireccionDocument>,
+  @InjectModel(Direccion.name) private direccionModel: Model<DireccionDocument>,
     @InjectModel(Transportista.name) private transportistaModel: Model<TransportistaDocument>,
   ) {}
 
