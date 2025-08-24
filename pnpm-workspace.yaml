@@ -1,0 +1,5 @@
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@openapitools/openapi-generator-cli'
+  - '@scarf/scarf'
+  - bcrypt
