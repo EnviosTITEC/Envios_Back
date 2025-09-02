@@ -1,26 +1,26 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class CreateDireccionDto {
+export class CreateAddressDto {
   @ApiProperty({ example: 'Av. Siempre Viva' })
   @IsString()
   @IsNotEmpty()
-  calle: string;
+  street: string;
 
   @ApiProperty({ example: '742' })
   @IsString()
   @IsNotEmpty()
-  numero: string;
+  number: string;
 
   @ApiProperty({ example: 'Springfield' })
   @IsString()
   @IsNotEmpty()
-  comuna: string;
+  comune: string;
 
   @ApiProperty({ example: 'Springfield' })
   @IsString()
   @IsNotEmpty()
-  provincia: string;
+  province: string;
 
   @ApiPropertyOptional({ example: 'Región Metropolitana' })
   @IsString()
@@ -30,15 +30,15 @@ export class CreateDireccionDto {
   @ApiPropertyOptional({ example: '1234567' })
   @IsString()
   @IsOptional()
-  codigoPostal?: string;
+  postalCode?: string;
 
   @ApiPropertyOptional({ example: 'Casa azul, portón rojo' })
   @IsString()
   @IsOptional()
-  referencias?: string;
+  references?: string;
 
   @ApiProperty({ example: 'userId123' })
   @IsString()
   @IsNotEmpty()
-  usuarioId: string;
+  userId: string;
 }

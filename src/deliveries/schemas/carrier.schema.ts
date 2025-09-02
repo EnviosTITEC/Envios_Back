@@ -1,24 +1,24 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type TransportistaDocument = Transportista & Document;
+export type CarrierDocument = Carrier & Document;
 
 @Schema({ timestamps: true, toJSON: { virtuals: true } })
-export class Transportista {
+export class Carrier {
   @Prop({ required: true })
-  nombre: string;
+  name: string;
 
   @Prop({ type: [String], default: [] })
-  zonasCobertura: string[];
+  coverageZones: string[];
 
   @Prop({ default: true })
-  disponible: boolean;
+  is_available: boolean;
 
   @Prop({ type: Map, of: Number }) // tarifa por zona
-  tarifas: Map<string, number>;
+  fee: Map<string, number>;
 }
 
-export const TransportistaSchema = SchemaFactory.createForClass(Transportista);
-TransportistaSchema.virtual('id').get(function () {
+export const CarrierSchema = SchemaFactory.createForClass(Carrier);
+CarrierSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
