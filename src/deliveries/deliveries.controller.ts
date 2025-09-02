@@ -4,60 +4,72 @@ import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { CreateCarrierDto } from './dto/create-carrier.dto';
 import { UpdateCarrierDto } from './dto/update-carrier.dto';
+import { QuoteCarrierDto } from './dto/quote-carrier.dto';
 
 @Controller('deliveries')
 export class DeliveriesController {
-  constructor(private readonly enviosService: DeliveriesService) {}
+  constructor(private readonly deliveriesService: DeliveriesService) {}
 
   // ----- DIRECCIONES -----
   @Post('addresses')
   createAddress(@Body() dto: CreateAddressDto) {
-    return this.enviosService.createAddress(dto);
+    return this.deliveriesService.createAddress(dto);
   }
 
   @Get('addresses')
   findAllAddresses(@Query('userId') userId: string) {
-    return this.enviosService.findAllDirecciones(userId);
+    return this.deliveriesService.findAllDirecciones(userId);
   }
 
   @Get('addresses/:id')
   findAddressById(@Param('id') id: string) {
-    return this.enviosService.findAddressById(id);
+    return this.deliveriesService.findAddressById(id);
   }
 
   @Patch('addresses/:id')
   updateAddress(@Param('id') id: string, @Body() dto: UpdateAddressDto) {
-    return this.enviosService.updateAddress(id, dto);
+    return this.deliveriesService.updateAddress(id, dto);
   }
 
   @Delete('addresses/:id')
   deleteAddress(@Param('id') id: string) {
-    return this.enviosService.deleteAddress(id);
+    return this.deliveriesService.deleteAddress(id);
   }
 
   // ----- TRANSPORTISTAS -----
   @Post('carriers')
   createCarrier(@Body() dto: CreateCarrierDto) {
-    return this.enviosService.createCarrier(dto);
+    return this.deliveriesService.createCarrier(dto);
   }
 
   @Get('carriers')
   findAllCarriers() {
-    return this.enviosService.findAllCarriers();
+    return this.deliveriesService.findAllCarriers();
   }
 
   @Get('carriers/:id')
   findCarrierById(@Param('id') id: string) {
-    return this.enviosService.findCarrierById(id);
+    return this.deliveriesService.findCarrierById(id);
   }
 
   @Patch('carriers/:id')
   updateCarrier(@Param('id') id: string, @Body() dto: UpdateCarrierDto) {
-    return this.enviosService.updateCarrier(id, dto);
+    return this.deliveriesService.updateCarrier(id, dto);
   }
 
   @Delete('carriers/:id')
   deleteCarrier(@Param('id') id: string) {
-    return this.enviosService.deleteCarrier(id);
+    return this.deliveriesService.deleteCarrier(id);
   }
+
+  // ----- COSTOS (depende del carrier) -----
+  @Post('carriers/:id/quote')
+  async quoteCarrier(
+    @Param('id') id: string,
+    @Body() dto: QuoteCarrierDto,
+  ) {
+    return this.deliveriesService.quoteCarrier(id, dto);
+  }
+
+  
 }

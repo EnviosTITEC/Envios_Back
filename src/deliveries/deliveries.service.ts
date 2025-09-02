@@ -7,6 +7,7 @@ import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { CreateCarrierDto } from './dto/create-carrier.dto';
 import { UpdateCarrierDto } from './dto/update-carrier.dto';
+import { QuoteCarrierDto } from './dto/quote-carrier.dto';
 
 @Injectable()
 export class DeliveriesService {
@@ -43,7 +44,7 @@ export class DeliveriesService {
     return { deleted: true };
   }
 
-  // ----- TRANSPORTISTAS -----
+  // ----- AGENCIAS TRANSPORTISTAS -----
   async createCarrier(dto: CreateCarrierDto) {
     const transportista = new this.carrierModel(dto);
     return transportista.save();
@@ -70,4 +71,17 @@ export class DeliveriesService {
     if (!deleted) throw new NotFoundException('Transportista no encontrado');
     return { deleted: true };
   }
+
+  async quoteCarrier(id: string, dto: QuoteCarrierDto) {
+    const carrier = await this.carrierModel.findById(id);
+    if (!carrier) throw new NotFoundException('Carrier not found');
+    // Call a method on the carrier to calculate the price (for now, return 0)
+    const price = 0
+    return {
+      carrier_id: id,
+      price,
+      currency: dto.currency,
+    };
+  }
+
 }
