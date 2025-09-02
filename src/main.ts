@@ -24,7 +24,7 @@ async function bootstrap() {
   // Configurar Swagger (ruta api-docs por defecto)
   const config = new DocumentBuilder()
     .setTitle('PulgaShop - Microservicio Envíos')
-  .setDescription('API para direcciones y transportistas')
+    .setDescription('API para direcciones y transportistas')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
