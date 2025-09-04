@@ -1,44 +1,45 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateAddressDto {
-  @ApiProperty({ example: 'Av. Siempre Viva' })
+
+  @ApiProperty({ required: true, example: 'Av. Siempre Viva' })
   @IsString()
   @IsNotEmpty()
   street: string;
 
-  @ApiProperty({ example: '742' })
+  @ApiProperty({ required: true, example: '742' })
   @IsString()
   @IsNotEmpty()
   number: string;
 
-  @ApiProperty({ example: 'Springfield' })
+  @ApiProperty({ required: true, example: 'Springfield' })
   @IsString()
   @IsNotEmpty()
   comune: string;
 
-  @ApiProperty({ example: 'Springfield' })
+  @ApiProperty({ required: true, example: 'Springfield' })
   @IsString()
   @IsNotEmpty()
   province: string;
 
-  @ApiPropertyOptional({ example: 'Región Metropolitana' })
+  @ApiProperty({ required: true, example: 'Región Metropolitana' })
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   region?: string;
 
-  @ApiPropertyOptional({ example: '1234567' })
+  @ApiProperty({ required: true, example: '1234567' })
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   postalCode?: string;
 
-  @ApiPropertyOptional({ example: 'Casa azul, portón rojo' })
+  @ApiPropertyOptional({ required: true, example: 'Casa azul, portón rojo' })
   @IsString()
-  @IsOptional()
   references?: string;
 
-  @ApiProperty({ example: 'userId123' })
+  @ApiProperty({ required: true, example: 'userId123' })
   @IsString()
   @IsNotEmpty()
   userId: string;
+
 }

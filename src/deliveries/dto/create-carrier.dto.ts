@@ -1,28 +1,21 @@
-import { IsNotEmpty, IsString, IsBoolean, IsOptional, IsArray } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsBoolean, IsArray } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCarrierDto {
-  @ApiProperty({ example: 'Transporte Rápido' })
+
+  @ApiProperty({ required: true, example: 'Transporte Rápido' })
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional({ example: ['Zona Norte', 'Zona Sur'], type: [String] })
+  @ApiProperty({ required: true, example: ['Zona Norte', 'Zona Sur'], type: [String] })
   @IsArray()
   @IsString({ each: true })
-  @IsOptional()
+  @IsNotEmpty()
   coverageZones?: string[];
 
-  @ApiPropertyOptional({ example: true })
+  @ApiProperty({ required: true, example: true })
   @IsBoolean()
-  @IsOptional()
-  is_available?: boolean;
+  is_disabled?: boolean;
 
-  @ApiPropertyOptional({
-    example: { 'Zona Norte': 5000, 'Zona Sur': 7000 },
-    type: 'object',
-    additionalProperties: { type: 'number' },
-  })
-  @IsOptional()
-  fee?: Record<string, number>; // { "Zona Norte": 5000, "Zona Sur": 7000 }
 }

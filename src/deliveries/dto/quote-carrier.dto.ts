@@ -1,5 +1,5 @@
 import { IsString, IsNumber, IsOptional, IsEnum } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class QuoteCarrierDto {
   
@@ -15,29 +15,29 @@ export class QuoteCarrierDto {
   @IsNumber()
   weight: number;
 
-  @ApiPropertyOptional({ type: () => Object })
-  @IsOptional()
+  @ApiProperty({ type: () => Object })
   dimensions?: {
     length: number;
     width: number;
     height: number;
   };
 
-  @ApiPropertyOptional({ enum: ['standard', 'express', 'overnight'], default: 'standard' })
+  @ApiProperty({ 
+    required: true,
+    enum: ['standard', 'express', 'overnight'],
+    default: 'standard' 
+  })
   @IsOptional()
   @IsEnum(['standard', 'express', 'overnight'])
   delivery_speed?: 'standard' | 'express' | 'overnight';
 
-  @ApiPropertyOptional()
-  @IsOptional()
+  @ApiProperty({ required: true })
   insurance_value?: number;
 
-  @ApiPropertyOptional()
-  @IsOptional()
+  @ApiProperty({ required: true })
   fragile?: boolean;
 
-  @ApiPropertyOptional({ default: 'CLP' })
-  @IsOptional()
+  @ApiProperty({ required: true, default: 'CLP' })
   currency?: string;
 
   constructor() {
