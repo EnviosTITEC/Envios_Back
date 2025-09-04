@@ -13,4 +13,4 @@ import { Carrier, CarrierSchema } from './schemas/carrier.schema';
   controllers: [CarriersController],
   providers: [CarriersService],
 })
-export class DeliveriesModule {}
+export class CarriersModule {}

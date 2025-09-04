@@ -13,4 +13,4 @@ import { Address, AddressSchema } from './schemas/address.schema';
   controllers: [AddressController],
   providers: [AddressService],
 })
-export class DeliveriesModule {}
+export class AddressModule {}
