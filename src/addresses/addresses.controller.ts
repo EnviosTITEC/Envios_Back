@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { AddressService } from './address.service';
+import { AddressesService } from './addresses.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 
 @Controller('address')
-export class AddressController {
-  constructor(private readonly addressService: AddressService) {}
+export class AddressesController {
+  constructor(private readonly addressService: AddressesService) {}
 
   @Post('addresses')
   createAddress(@Body() dto: CreateAddressDto) {
@@ -14,7 +14,7 @@ export class AddressController {
 
   @Get('addresses')
   findAllAddresses(@Query('userId') userId: string) {
-    return this.addressService.findAllAddress(userId);
+    return this.addressService.findAllAddresses(userId);
   }
 
   @Get('addresses/:id')

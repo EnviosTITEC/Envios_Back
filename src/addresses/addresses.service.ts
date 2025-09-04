@@ -8,7 +8,7 @@ import { UpdateAddressDto } from './dto/update-address.dto';
 const ERROR_MSG = "Address not found."
 
 @Injectable()
-export class AddressService {
+export class AddressesService {
   constructor(
   @InjectModel(Address.name) private addressModel: Model<AddressDocument>,
   ) {}
@@ -18,7 +18,7 @@ export class AddressService {
     return address.save();
   }
 
-  async findAllAddress(userId: string) {
+  async findAllAddresses(userId: string) {
     return this.addressModel.find({ userId: userId }).exec();
   }
 
