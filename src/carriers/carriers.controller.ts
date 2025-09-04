@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { CarriersService } from './carriers.service';
 import { CreateCarrierDto } from './dto/create-carrier.dto';
 import { UpdateCarrierDto } from './dto/update-carrier.dto';
-import { QuoteCarrierDto } from './dto/quote-carrier.dto';
+import { DeliveryDto } from '../contracts/delivery.dto';
 
 @Controller('carriers')
 export class CarriersController {
@@ -36,7 +36,7 @@ export class CarriersController {
   @Post('carriers/:id/quote')
   async quoteCarrier(
     @Param('id') id: string,
-    @Body() dto: QuoteCarrierDto,
+    @Body() dto: DeliveryDto,
   ) {
     return this.carriersService.quoteCarrier(id, dto);
   }

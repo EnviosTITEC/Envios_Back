@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { Carrier, CarrierDocument } from './schemas/carrier.schema';
 import { CreateCarrierDto } from './dto/create-carrier.dto';
 import { UpdateCarrierDto } from './dto/update-carrier.dto';
-import { QuoteCarrierDto } from './dto/quote-carrier.dto';
+import { DeliveryDto } from '../contracts/delivery.dto';
 
 const ERROR_MSG = "Carrier not found."
 
@@ -15,8 +15,8 @@ export class CarriersService {
   ) {}
 
   async createCarrier(dto: CreateCarrierDto) {
-    const transportista = new this.carrierModel(dto);
-    return transportista.save();
+    const carrier = new this.carrierModel(dto);
+    return carrier.save();
   }
 
   async findAllCarriers() {
@@ -24,9 +24,9 @@ export class CarriersService {
   }
 
   async findCarrierById(id: string) {
-    const transportista = await this.carrierModel.findById(id).exec();
-    if (!transportista) throw new NotFoundException(ERROR_MSG);
-    return transportista;
+    const carrier = await this.carrierModel.findById(id).exec();
+    if (!carrier) throw new NotFoundException(ERROR_MSG);
+    return carrier;
   }
 
   async updateCarrier(id: string, dto: UpdateCarrierDto) {
@@ -41,7 +41,7 @@ export class CarriersService {
     return { deleted: true };
   }
 
-  async quoteCarrier(id: string, dto: QuoteCarrierDto) {
+  async quoteCarrier(id: string, dto: DeliveryDto) {
     const carrier = await this.carrierModel.findById(id);
     if (!carrier) throw new NotFoundException(ERROR_MSG);
     // Call a method on the carrier to calculate the price (for now, return 0)

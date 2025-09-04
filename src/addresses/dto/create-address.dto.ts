@@ -26,16 +26,16 @@ export class CreateAddressDto {
   @ApiProperty({ required: true, example: 'Región Metropolitana' })
   @IsString()
   @IsNotEmpty()
-  region?: string;
+  region: string;
 
   @ApiProperty({ required: true, example: '1234567' })
   @IsString()
   @IsNotEmpty()
-  postalCode?: string;
+  postalCode: string;
 
   @ApiPropertyOptional({ required: true, example: 'Casa azul, portón rojo' })
   @IsString()
-  references?: string;
+  references: string;
 
   @ApiProperty({ required: true, example: 'userId123' })
   @IsString()

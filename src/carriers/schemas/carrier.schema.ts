@@ -12,10 +12,7 @@ export class Carrier {
   coverageZones: string[];
 
   @Prop({ default: true })
-  is_available: boolean;
-
-  @Prop({ type: Map, of: Number }) // tarifa por zona
-  fee: Map<string, number>;
+  isAvailable: boolean;
 }
 
 export const CarrierSchema = SchemaFactory.createForClass(Carrier);

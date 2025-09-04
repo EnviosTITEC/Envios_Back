@@ -8,14 +8,18 @@ export class CreateCarrierDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ required: true, example: ['Zona Norte', 'Zona Sur'], type: [String] })
+  @ApiProperty({ 
+    required: true,
+    example: ['Zona Norte', 'Zona Sur'],
+    type: [String]
+  })
   @IsArray()
   @IsString({ each: true })
   @IsNotEmpty()
-  coverageZones?: string[];
+  coverageZones: string[];
 
   @ApiProperty({ required: true, example: true })
   @IsBoolean()
-  is_disabled?: boolean;
+  isActive: boolean;
 
 }

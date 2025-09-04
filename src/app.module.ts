@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AddressModule } from './addresses/addresses.module';
 import { CityModule as CountriesModule } from './cities/cities.module';
 import { CarriersModule } from './carriers/carriers.module';
+import { DeliveriesModule } from './deliveries/deliveries.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CarriersModule } from './carriers/carriers.module';
   AddressModule,
   CountriesModule,
   CarriersModule,
+  DeliveriesModule,
   ],
 })
 export class AppModule {}
