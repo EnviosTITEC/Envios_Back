@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { DeliveriesModule } from './deliveries/deliveries.module';
+import { DeliveriesModule } from './address/address.module';
 import { CityModule as CountriesModule } from './cities/cities.module';
 
 @Module({
@@ -12,7 +12,6 @@ import { CityModule as CountriesModule } from './cities/cities.module';
     ConfigModule.forRoot({
       isGlobal: true, // Disponible en toda la aplicación
     }),
-    
     // Conexión a MongoDB
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -21,7 +20,6 @@ import { CityModule as CountriesModule } from './cities/cities.module';
         uri: configService.get<string>('MONGODB_URI'),
       }),
     }),
-    
     // Módulos de la aplicación
   AuthModule,
   UsersModule,

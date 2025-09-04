@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type AddressDocument = Address & Document;
 
-@Schema({ collection: 'deliveries', timestamps: true, toJSON: { virtuals: true } })
+@Schema({ collection: 'addresses', timestamps: true, toJSON: { virtuals: true } })
 export class Address {
   @Prop({ required: true })
   street: string;

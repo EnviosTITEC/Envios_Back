@@ -1,0 +1,56 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Carrier, CarrierDocument } from './schemas/carrier.schema';
+import { CreateCarrierDto } from './dto/create-carrier.dto';
+import { UpdateCarrierDto } from './dto/update-carrier.dto';
+import { QuoteCarrierDto } from './dto/quote-carrier.dto';
+
+const ERROR_MSG = "Carrier not found."
+
+@Injectable()
+export class CarriersService {
+  constructor(
+    @InjectModel(Carrier.name) private carrierModel: Model<CarrierDocument>,
+  ) {}
+
+  async createCarrier(dto: CreateCarrierDto) {
+    const transportista = new this.carrierModel(dto);
+    return transportista.save();
+  }
+
+  async findAllCarriers() {
+    return this.carrierModel.find().exec();
+  }
+
+  async findCarrierById(id: string) {
+    const transportista = await this.carrierModel.findById(id).exec();
+    if (!transportista) throw new NotFoundException(ERROR_MSG);
+    return transportista;
+  }
+
+  async updateCarrier(id: string, dto: UpdateCarrierDto) {
+    const updated = await this.carrierModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+    if (!updated) throw new NotFoundException(ERROR_MSG);
+    return updated;
+  }
+
+  async deleteCarrier(id: string) {
+    const deleted = await this.carrierModel.findByIdAndDelete(id).exec();
+    if (!deleted) throw new NotFoundException(ERROR_MSG);
+    return { deleted: true };
+  }
+
+  async quoteCarrier(id: string, dto: QuoteCarrierDto) {
+    const carrier = await this.carrierModel.findById(id);
+    if (!carrier) throw new NotFoundException(ERROR_MSG);
+    // Call a method on the carrier to calculate the price (for now, return 0)
+    const price = 0
+    return {
+      carrier_id: id,
+      price,
+      currency: dto.currency,
+    };
+  }
+
+}
