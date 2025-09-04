@@ -4,36 +4,36 @@ import { CreateCarrierDto } from './dto/create-carrier.dto';
 import { UpdateCarrierDto } from './dto/update-carrier.dto';
 import { DeliveryDto } from '../contracts/delivery.dto';
 
-@Controller('carriers')
+@Controller("carriers")
 export class CarriersController {
   constructor(private readonly carriersService: CarriersService) {}
 
-  @Post('carriers')
+  @Post()
   createCarrier(@Body() dto: CreateCarrierDto) {
     return this.carriersService.createCarrier(dto);
   }
 
-  @Get('carriers')
+  @Get()
   findAllCarriers() {
     return this.carriersService.findAllCarriers();
   }
 
-  @Get('carriers/:id')
+  @Get(':id')
   findCarrierById(@Param('id') id: string) {
     return this.carriersService.findCarrierById(id);
   }
 
-  @Patch('carriers/:id')
+  @Patch(':id')
   updateCarrier(@Param('id') id: string, @Body() dto: UpdateCarrierDto) {
     return this.carriersService.updateCarrier(id, dto);
   }
 
-  @Delete('carriers/:id')
+  @Delete(':id')
   deleteCarrier(@Param('id') id: string) {
     return this.carriersService.deleteCarrier(id);
   }
 
-  @Post('carriers/:id/quote')
+  @Post(':id/quote')
   async quoteCarrier(
     @Param('id') id: string,
     @Body() dto: DeliveryDto,
