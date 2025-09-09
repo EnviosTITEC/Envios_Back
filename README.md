@@ -88,6 +88,30 @@ La autenticación está implementada usando JWT (JSON Web Tokens):
 - pnpm (sigue las instrucciones de instalación del README del frontend)
 - MongoDB (instalado localmente o una instancia en la nube como MongoDB Atlas)
 
+### MongoDB Atlas
+
+1. **Seleccionar/Crear usuario de base de datos**
+   - Atlas → **Security** → **Database Access** → **Add New Database User**
+   - Método: **Password**
+   - Rol sugerido: `readWrite` sobre la base del proyecto (p. ej., `gpi_database`)
+
+3. **Permitir IP**
+   - Atlas → **Security** → **Network Access** → **Add IP Address**
+
+4. **Obtener la cadena de conexión (SRV)**
+   - Botón **Connect** → **Drivers** → **Node.js**
+   - Formato típico:
+     
+     ```
+     mongodb+srv://<user>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority
+     ```
+   #### Notas adicionales: 
+   * Se ha enviado una **invitación** al proyecto la cual debe ser aceptada para acceder al dashboard de Atlas.
+   * Para **entorno de desarrollo**, se configuró temporalmente acceso por IP con expiración de **1 semana**.
+   * Es **recomendable generar una contraseña nueva y fuerte** para cada usuario y almacenarla en un gestor seguro.
+   * **Importante:** Atlas **no muestra contraseñas existentes**. Si la olvidas, usa **Reset Password** en *Database Access* y actualiza tu `.env`.
+   * Dentro del apartado de **Database Access** se pueden encontrar los usuarios y correspondientes contraseñas que deben ser usadas en la cadena de conexión a Atlas.
+
 ### Instalación
 
 1. Clona este repositorio:
@@ -105,7 +129,10 @@ La autenticación está implementada usando JWT (JSON Web Tokens):
    ```
    NODE_ENV=development
    PORT=3000
-   MONGODB_URI=mongodb://localhost:27017/gpi_database
+   MONGODB_URI=mongodb+srv://<user>:<pass-URL-encoded>@<cluster>.mongodb.net/gpi_database?retryWrites=true&w=majority
+   # Local (dejar comentado si usas Atlas):
+   # MONGODB_URI=mongodb://localhost:27017/gpi_database
+
    JWT_SECRET=EstoEsUnSecretoSuperSeguroParaElCursoGPI
    JWT_EXPIRES_IN=1d
    ```
