@@ -1,0 +1,367 @@
+@startuml
+hide empty members
+set namespaceSeparator none
+
+interface "/api/auth/login" {
+}
+
+class "POST /api/auth/login" {
+
+.. responses ..
+201: {field} <i>not specified</i> 
+}
+
+
+
+"/api/auth/login" ..> "POST /api/auth/login"
+
+
+
+interface "/api/auth/register" {
+}
+
+class "POST /api/auth/register" {
+
+.. responses ..
+201: {field} <i>not specified</i> 
+}
+
+
+
+"/api/auth/register" ..> "POST /api/auth/register"
+
+
+
+interface "/api/auth/me" {
+}
+
+class "GET /api/auth/me" {
+
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/auth/me" ..> "GET /api/auth/me"
+
+
+
+interface "/api/users" {
+}
+
+class "POST /api/users" {
+
+.. responses ..
+201: {field} <i>not specified</i> 
+}
+
+
+
+class "GET /api/users" {
+
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/users" ..> "GET /api/users"
+"/api/users" ..> "POST /api/users"
+
+
+
+interface "/api/users/{id}" {
+}
+
+class "GET /api/users/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "PATCH /api/users/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "DELETE /api/users/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/users/{id}" ..> "DELETE /api/users/{id}"
+"/api/users/{id}" ..> "GET /api/users/{id}"
+"/api/users/{id}" ..> "PATCH /api/users/{id}"
+
+
+
+interface "/api/address/addresses" {
+}
+
+class "POST /api/address/addresses" {
+
+.. responses ..
+201: {field} <i>not specified</i> 
+}
+
+
+
+class "GET /api/address/addresses" {
+.. query ..
+{field} string <b>userId</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/address/addresses" ..> "GET /api/address/addresses"
+"/api/address/addresses" ..> "POST /api/address/addresses"
+
+
+
+interface "/api/address/addresses/{id}" {
+}
+
+class "GET /api/address/addresses/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "PATCH /api/address/addresses/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "DELETE /api/address/addresses/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/address/addresses/{id}" ..> "DELETE /api/address/addresses/{id}"
+"/api/address/addresses/{id}" ..> "GET /api/address/addresses/{id}"
+"/api/address/addresses/{id}" ..> "PATCH /api/address/addresses/{id}"
+
+
+
+interface "/api/cities" {
+}
+
+class "POST /api/cities" {
+
+.. responses ..
+201: {field} <i>not specified</i> 
+}
+
+
+
+class "GET /api/cities" {
+
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/cities" ..> "GET /api/cities"
+"/api/cities" ..> "POST /api/cities"
+
+
+
+interface "/api/cities/{id}" {
+}
+
+class "GET /api/cities/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "PATCH /api/cities/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "DELETE /api/cities/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/cities/{id}" ..> "DELETE /api/cities/{id}"
+"/api/cities/{id}" ..> "GET /api/cities/{id}"
+"/api/cities/{id}" ..> "PATCH /api/cities/{id}"
+
+
+
+interface "/api/carriers" {
+}
+
+class "POST /api/carriers" {
+
+.. responses ..
+201: {field} <i>not specified</i> 
+}
+
+
+
+class "GET /api/carriers" {
+
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/carriers" ..> "GET /api/carriers"
+"/api/carriers" ..> "POST /api/carriers"
+
+
+
+interface "/api/carriers/{id}" {
+}
+
+class "GET /api/carriers/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "PATCH /api/carriers/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "DELETE /api/carriers/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/carriers/{id}" ..> "DELETE /api/carriers/{id}"
+"/api/carriers/{id}" ..> "GET /api/carriers/{id}"
+"/api/carriers/{id}" ..> "PATCH /api/carriers/{id}"
+
+
+
+interface "/api/carriers/{id}/quote" {
+}
+
+class "POST /api/carriers/{id}/quote" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+201: {field} <i>not specified</i> 
+}
+
+
+
+"/api/carriers/{id}/quote" ..> "POST /api/carriers/{id}/quote"
+
+
+
+interface "/api/deliveries" {
+}
+
+class "POST /api/deliveries" {
+
+.. responses ..
+201: {field} <i>not specified</i> 
+}
+
+
+
+class "GET /api/deliveries" {
+
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/deliveries" ..> "GET /api/deliveries"
+"/api/deliveries" ..> "POST /api/deliveries"
+
+
+
+interface "/api/deliveries/{id}" {
+}
+
+class "GET /api/deliveries/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "PATCH /api/deliveries/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+class "DELETE /api/deliveries/{id}" {
+.. path ..
+{field} string <b>id</b>
+.. responses ..
+200: {field} <i>not specified</i> 
+}
+
+
+
+"/api/deliveries/{id}" ..> "DELETE /api/deliveries/{id}"
+"/api/deliveries/{id}" ..> "GET /api/deliveries/{id}"
+"/api/deliveries/{id}" ..> "PATCH /api/deliveries/{id}"
+
+
+
+@enduml

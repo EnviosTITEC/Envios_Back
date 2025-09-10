@@ -1,0 +1,13 @@
+[build-system]
+requires = [
+    "poetry-core",
+]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "swagger_to_uml"
+version = "1.0.0"
+
+[tool.poetry.dependencies]
+python = "3.12.9"
+pyaml = "25.7.0"
