@@ -1,8 +1,9 @@
 # PulgaShop - Microservicio Envíos API Specification
 
-**Version:** 1.0  
-**Base URL:** `http://localhost:3000/api`  
-**Swagger Documentation:** `http://localhost:3000/api-docs`
+> **Version:** 1.0  
+> **Base URL:** `http://localhost:3000/api`  
+> **Swagger Documentation:** `http://localhost:3000/api-docs`
+> **Mockup for front-end: [Figma URL](`https://www.figma.com/design/aSzfltXTlqDjB4kaRq91Ue/Untitled?node-id=208-980&t=cHUtZtUL3zgx5W8w-1`)**
 
 ## Overview
 
