@@ -4,6 +4,12 @@
 * **Base URL:** `http://localhost:3000/api`  
 * **Swagger Documentation:** `http://localhost:3000/api-docs`
 * **Mockup for front-end: [Figma URL](https://www.figma.com/design/aSzfltXTlqDjB4kaRq91Ue/Untitled?node-id=208-980&t=cHUtZtUL3zgx5W8w-1)**
+* - **Lucas Rojas** - lucas.rojas@estudiantes.uv.cl - Seguridad
+* - **Alejandro Dinamarca** - alejandro.dinamarca@estudiantes.uv.cl - Back End y Servicios
+* - **Ricardo Silva** - ricardo.silvap@estudiantes.uv.cl - UI/UX
+* - **Renata Orozco** - renata.orozco@estudiantes.uv.cl - UI/UX
+* - **Giovanni Vásquez** - giovanni.vasquez@estudiantes.uv.cl - Back End y Base de Datos
+
 
 ## Overview
 
