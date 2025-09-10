@@ -15,6 +15,13 @@ Este backend utiliza las siguientes tecnologías:
 - **Class Validator**: Validación de datos basada en decoradores
 - **bcrypt**: Librería para hashear contraseñas
 
+## 🎨 Diseño (UI/UX)
+
+Los mockups y prototipos para el frontend están disponibles en Figma:
+
+👉 [Ver mockups en Figma](https://www.figma.com/design/aSzfltXTlqDjB4kaRq91Ue/Untitled?node-id=0-1&t=EUo6JxVxO675sISn-1)
+
+
 ## 📁 Estructura de Carpetas
 
 ```
