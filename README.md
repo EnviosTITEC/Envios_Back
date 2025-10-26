@@ -26,6 +26,13 @@ Authorization: Bearer <jwt_token>
 
 ---
 
+## Environment setup
+
+This shipping microservice requires a default carrier to be seeded to the database, which is defined
+through the environment variable `CARRIERS_JSON`, which is an array of valid payload of [Carrier schemas](./src/carriers/schemas/carrier.schema.ts).
+
+Define it before running the application, otherwise exceptions may occur.
+
 ## API Endpoints
 
 ### 🔐 Authentication
