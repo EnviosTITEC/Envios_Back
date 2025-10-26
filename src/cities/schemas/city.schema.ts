@@ -7,7 +7,7 @@ export class City extends Document {
   name: string;
 
   @Prop({ required: true, unique: true })
-  code: string;
+  postal_code: string;
 }
 
 export const CitySchema = SchemaFactory.createForClass(City);

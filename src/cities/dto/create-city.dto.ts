@@ -3,13 +3,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCityDto {
 
-  @ApiProperty({ required: true, example: "Los Ángeles" })
+  @ApiProperty({ required: true, example: "Santo Domingo" })
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: true, example: "2720000" })
   @IsString()
   @IsNotEmpty()
-  code: string;
+  postal_code: string;
 }
