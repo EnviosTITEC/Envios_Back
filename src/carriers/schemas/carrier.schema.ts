@@ -5,11 +5,14 @@ export type CarrierDocument = Carrier & Document;
 
 @Schema({ timestamps: true, toJSON: { virtuals: true } })
 export class Carrier {
+  @Prop({ required: true, unique: true, index: true })
+  code: string;
+
   @Prop({ required: true })
   name: string;
 
-  @Prop({ type: [String], default: [] })
-  coverageZones: string[];
+  @Prop({ type: JSON, required: true })
+  credentials: JSON;
 
   @Prop({ default: true })
   isAvailable: boolean;
