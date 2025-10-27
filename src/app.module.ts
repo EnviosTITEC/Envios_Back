@@ -8,13 +8,16 @@ import { AddressModule } from './addresses/addresses.module';
 import { CityModule as CountriesModule } from './cities/cities.module';
 import { CarriersModule } from './carriers/carriers.module';
 import { DeliveriesModule } from './deliveries/deliveries.module';
-import { PostalModule } from './postal/postal.module'; // NUEVO
+import { PostalModule } from './postal/postal.module'; // <-- asegúrate que este import exista
 
 @Module({
   imports: [
+    // variables de entorno globales
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+
+    // conexión a MongoDB
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -22,13 +25,15 @@ import { PostalModule } from './postal/postal.module'; // NUEVO
         uri: configService.get<string>('MONGODB_URI'),
       }),
     }),
+
+    // módulos de la app
     AuthModule,
     UsersModule,
     AddressModule,
     CountriesModule,
     CarriersModule,
     DeliveriesModule,
-    PostalModule, // 👈 NUEVO
+    PostalModule, // <-- mantenlo aquí
   ],
 })
 export class AppModule {}

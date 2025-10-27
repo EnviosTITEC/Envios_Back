@@ -11,53 +11,47 @@ const ERROR_MSG = 'Address not found.';
 export class AddressesService {
   constructor(
     @InjectModel(Address.name)
-    private readonly addressModel: Model<AddressDocument>,
+    private addressModel: Model<AddressDocument>,
   ) {}
 
   async createAddress(dto: CreateAddressDto) {
-    const address = new this.addressModel({
-      street: dto.street,
-      number: dto.number,
-      comune: dto.comune,
-      province: dto.province,
-      region: dto.region,
-      postalCode: dto.postalCode?.trim() || '', // ahora opcional
-      references: dto.references?.trim() || '',
-      userId: dto.userId,
-    });
+    // dto viene con:
+    // street, number, comune, province, region, postalCode?, references?, userId
+    const address = new this.addressModel(dto);
     return address.save();
   }
 
   async findAllAddresses(userId: string) {
-    return this.addressModel.find({ userId }).exec();
+    // trae todas las direcciones de un usuario
+    return this.addressModel.find({ userId: userId }).exec();
   }
 
   async findAddressById(id: string) {
     const address = await this.addressModel.findById(id).exec();
-    if (!address) throw new NotFoundException(ERROR_MSG);
+    if (!address) {
+        throw new NotFoundException(ERROR_MSG);
+    }
     return address;
   }
 
   async updateAddress(id: string, dto: UpdateAddressDto) {
+    // dto puede tener subset de campos
     const updated = await this.addressModel
-      .findByIdAndUpdate(
-        id,
-        {
-          ...dto,
-          postalCode: dto.postalCode?.trim() || '',
-          references: dto.references?.trim() || '',
-        },
-        { new: true },
-      )
+      .findByIdAndUpdate(id, dto, { new: true })
       .exec();
 
-    if (!updated) throw new NotFoundException(ERROR_MSG);
+    if (!updated) {
+      throw new NotFoundException(ERROR_MSG);
+    }
+
     return updated;
   }
 
   async deleteAddress(id: string) {
     const deleted = await this.addressModel.findByIdAndDelete(id).exec();
-    if (!deleted) throw new NotFoundException(ERROR_MSG);
+    if (!deleted) {
+      throw new NotFoundException(ERROR_MSG);
+    }
     return { deleted: true };
   }
 }
