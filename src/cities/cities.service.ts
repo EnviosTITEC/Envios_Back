@@ -11,8 +11,8 @@ export class CitiesService {
     @InjectModel(City.name) private cityModel: Model<City>,
   ) {}
 
-  create(createCityDto: CreateCityDto) {
-    const created = new this.cityModel(createCityDto);
+  create(dto: CreateCityDto) {
+    const created = new this.cityModel(dto);
     return created.save();
   }
 
