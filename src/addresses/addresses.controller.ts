@@ -1,4 +1,3 @@
-//addresses.controller.ts
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { AddressesService } from './addresses.service';
 import { CreateAddressDto } from './dto/create-address.dto';
@@ -9,28 +8,28 @@ export class AddressesController {
   constructor(private readonly addressService: AddressesService) {}
 
   @Post('addresses')
-  createAddress(@Body() dto: CreateAddressDto) {
-    return this.addressService.createAddress(dto);
+  create(@Body() dto: CreateAddressDto) {
+    return this.addressService.create(dto);
   }
 
   @Get('addresses')
-  findAllAddresses(@Query('userId') userId: string) {
-    return this.addressService.findAllAddresses(userId);
+  findAll(@Query('userId') userId: string) {
+    return this.addressService.findAll(userId);
   }
 
   @Get('addresses/:id')
-  findAddressById(@Param('id') id: string) {
-    return this.addressService.findAddressById(id);
+  findById(@Param('id') id: string) {
+    return this.addressService.findById(id);
   }
 
   @Patch('addresses/:id')
-  updateAddress(@Param('id') id: string, @Body() dto: UpdateAddressDto) {
-    return this.addressService.updateAddress(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateAddressDto) {
+    return this.addressService.update(id, dto);
   }
 
   @Delete('addresses/:id')
-  deleteAddress(@Param('id') id: string) {
-    return this.addressService.deleteAddress(id);
+  delete(@Param('id') id: string) {
+    return this.addressService.delete(id);
   }
 
   
