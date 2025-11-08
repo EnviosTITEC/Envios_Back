@@ -9,36 +9,36 @@ export class CarriersController {
   constructor(private readonly carriersService: CarriersService) {}
 
   @Post()
-  createCarrier(@Body() dto: CreateCarrierDto) {
-    return this.carriersService.createCarrier(dto);
+  create(@Body() dto: CreateCarrierDto) {
+    return this.carriersService.create(dto);
   }
 
   @Get()
-  findAllCarriers() {
-    return this.carriersService.findAllCarriers();
+  findAll() {
+    return this.carriersService.findAll();
   }
 
   @Get(':id')
-  findCarrierById(@Param('id') id: string) {
-    return this.carriersService.findCarrierById(id);
+  findById(@Param('id') id: string) {
+    return this.carriersService.findById(id);
   }
 
   @Patch(':id')
-  updateCarrier(@Param('id') id: string, @Body() dto: UpdateCarrierDto) {
-    return this.carriersService.updateCarrier(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateCarrierDto) {
+    return this.carriersService.update(id, dto);
   }
 
   @Delete(':id')
-  deleteCarrier(@Param('id') id: string) {
-    return this.carriersService.deleteCarrier(id);
+  delete(@Param('id') id: string) {
+    return this.carriersService.delete(id);
   }
 
   @Post(':id/quote')
-  async quoteCarrier(
+  async quote(
     @Param('id') id: string,
     @Body() dto: DeliveryDto,
   ) {
-    return this.carriersService.quoteCarrier(id, dto);
+    return this.carriersService.quote(id, dto);
   }
 
   
