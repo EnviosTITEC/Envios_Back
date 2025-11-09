@@ -1,27 +1,27 @@
 import { Injectable, HttpException } from '@nestjs/common';
 
-export interface PostalCommune {
+export interface GeoCommune {
   code: string;
   name: string;
 }
 
-export interface PostalProvince {
+export interface GeoProvince {
   code: string;
   name: string;
-  communes: PostalCommune[];
+  communes: GeoCommune[];
 }
 
-export interface PostalRegion {
+export interface GeoRegion {
   code: string;
   name: string;
-  provinces: PostalProvince[];
+  provinces: GeoProvince[];
 }
 
 @Injectable()
-export class PostalService {
-  private cache: PostalRegion[] | null = null;
+export class GeoService {
+  private cache: GeoRegion[] | null = null;
 
-  async getRegionsTree(): Promise<PostalRegion[]> {
+  async getRegions(): Promise<GeoRegion[]> {
     if (this.cache) {
       return this.cache;
     }
@@ -34,7 +34,7 @@ export class PostalService {
     }
     const regionsRaw = await resRegions.json();
 
-    const regions: PostalRegion[] = [];
+    const regions: GeoRegion[] = [];
 
     for (const region of regionsRaw) {
       const resProvinces = await fetch(
@@ -45,7 +45,7 @@ export class PostalService {
       }
       const provincesRaw = await resProvinces.json();
 
-      const provinces: PostalProvince[] = [];
+      const provinces: GeoProvince[] = [];
 
       for (const prov of provincesRaw) {
         const resCommunes = await fetch(

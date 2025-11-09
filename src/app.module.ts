@@ -7,7 +7,7 @@ import { AddressModule } from './addresses/addresses.module';
 import { CityModule as CountriesModule } from './cities/cities.module';
 import { CarriersModule } from './carriers/carriers.module';
 import { DeliveriesModule } from './deliveries/deliveries.module';
-import { PostalModule } from './postal/postal.module'; // <-- asegúrate que este import exista
+import { GeoModule } from './geo/geo.module'; // <-- asegúrate que este import exista
 
 @Module({
   imports: [
@@ -31,7 +31,7 @@ import { PostalModule } from './postal/postal.module'; // <-- asegúrate que est
     CountriesModule,
     CarriersModule,
     DeliveriesModule,
-    PostalModule, // <-- mantenlo aquí
+    GeoModule,
   ],
 })
 export class AppModule {}
