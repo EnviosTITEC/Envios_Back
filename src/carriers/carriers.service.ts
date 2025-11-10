@@ -5,13 +5,16 @@ import { Carrier, CarrierDocument } from './schemas/carrier.schema';
 import { CreateCarrierDto } from './dto/create-carrier.dto';
 import { UpdateCarrierDto } from './dto/update-carrier.dto';
 import { DeliveryDto } from '../contracts/delivery.dto';
+// NOTE: since this file is in src/carriers/, the relative path is "./adapters/..."
+import { ChilexpressAdapter } from './adapters/chilexpress-adapters';
 
-const ERROR_MSG = "Carrier not found."
+const ERROR_MSG = 'Carrier not found.';
 
 @Injectable()
 export class CarriersService {
   constructor(
     @InjectModel(Carrier.name) private carrierModel: Model<CarrierDocument>,
+    private readonly chilexpress: ChilexpressAdapter, // <-- inject
   ) {}
 
   async create(dto: CreateCarrierDto) {
@@ -41,16 +44,11 @@ export class CarriersService {
     return { deleted: true };
   }
 
-  async quote(id: string, dto: DeliveryDto) {
-    const carrier = await this.carrierModel.findById(id);
-    if (!carrier) throw new NotFoundException(ERROR_MSG);
-    // Call a method on the carrier to calculate the price (for now, return 0)
-    const price = 0
-    return {
-      carrier_id: id,
-      price,
-      currency: dto.currency,
-    };
+  async quote(dto: DeliveryDto) {
+    const quote = await this.chilexpress.getQuote(dto);
+    return quote;
   }
+
+
 
 }

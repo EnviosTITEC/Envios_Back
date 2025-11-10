@@ -1,82 +1,54 @@
-// Meant to use for creating/updating deliveries and quoting carriers
-
-import { 
-  IsString, 
-  IsNumber, 
-  IsOptional, 
-  IsEnum, 
-  IsBoolean, 
-  IsDate, 
-  ValidateNested 
-} from 'class-validator';
-import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsObject, IsString, Min, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export enum DeliverySpeed {
-  STANDARD = 'standard',
-  EXPRESS = 'express',
-  OVERNIGHT = 'overnight',
-}
+class PackageDto {
+  @ApiProperty({ example: '16', description: 'Package weight (kg)' })
+  @IsString()
+  weight!: string;
 
-export class DimensionsDto {
-  @ApiProperty()
-  @IsNumber()
-  length: number;
+  @ApiProperty({ example: '1', description: 'Package height (cm)' })
+  @IsString()
+  height!: string;
 
-  @ApiProperty()
-  @IsNumber()
-  width: number;
+  @ApiProperty({ example: '1', description: 'Package width (cm)' })
+  @IsString()
+  width!: string;
 
-  @ApiProperty()
-  @IsNumber()
-  height: number;
-
-  @ApiProperty()
-  @IsNumber()
-  weight: number;
+  @ApiProperty({ example: '1', description: 'Package length (cm)' })
+  @IsString()
+  length!: string;
 }
 
 export class DeliveryDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'STGO', description: 'Origin county code' })
   @IsString()
-  originPostalCode: string;
+  originCountyCode!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'PROV', description: 'Destination county code' })
   @IsString()
-  destinationPostalCode: string;
+  destinationCountyCode!: string;
 
-  @ApiProperty()
-  @IsNumber()
-  weight: number;
-
-  @ApiProperty({ type: () => DimensionsDto })
+  @ApiProperty({ type: PackageDto })
   @ValidateNested()
-  @Type(() => DimensionsDto)
-  dimensions: DimensionsDto;
+  @Type(() => PackageDto)
+  @IsObject()
+  package!: PackageDto;
 
-  @ApiProperty({ 
-    enum: DeliverySpeed, 
-    default: DeliverySpeed.STANDARD, 
-    required: false 
-  })
-  @IsOptional()
-  @IsEnum(DeliverySpeed)
-  deliverySpeed: DeliverySpeed = DeliverySpeed.STANDARD;
-
-  @ApiProperty()
+  @ApiProperty({ example: 3, description: 'Product type code' })
   @IsNumber()
-  insuranceValue: number;
+  productType!: number;
 
-  @ApiProperty()
-  @IsBoolean()
-  fragile: boolean;
+  @ApiProperty({ example: 1, description: 'Content type code' })
+  @IsNumber()
+  contentType!: number;
 
-  @ApiProperty({ default: 'CLP' })
+  @ApiProperty({ example: '2333', description: 'Declared worth (currency amount)' })
   @IsString()
-  currency: string = 'CLP';
+  declaredWorth!: string;
 
-  @ApiProperty({ type: String, format: 'date-time' })
-  @IsDate()
-  @Type(() => Date)
-  pickupDate: Date;
+  @ApiProperty({ example: 0, description: 'Delivery time preference (0 = standard)' })
+  @IsNumber()
+  @Min(0)
+  deliveryTime!: number;
 }
