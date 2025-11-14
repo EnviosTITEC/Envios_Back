@@ -1,4 +1,4 @@
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, NotFoundException } from '@nestjs/common';
 
 export interface GeoCommune {
   code: string;
@@ -21,6 +21,10 @@ export interface GeoRegion {
 export class GeoService {
   private cache: GeoRegion[] | null = null;
 
+  /**
+   * Obtiene regiones, provincias y comunas desde la API del gobierno (DPA)
+   * y las guarda en memoria para reutilizar.
+   */
   async getRegions(): Promise<GeoRegion[]> {
     if (this.cache) {
       return this.cache;
@@ -79,5 +83,50 @@ export class GeoService {
 
     this.cache = regions;
     return regions;
+  }
+
+  /**
+   * Mapping MUY sencillo de DPA/nombre → códigos Chilexpress.
+   * Esto es solo para tu demo: cubre Santiago y Valparaíso.
+   */
+  findChilexpressCountyByCommuneId(communeId: string): {
+    chilexpressCountyCode: string;
+    chilexpressCountyName: string;
+  } {
+    const raw = (communeId ?? '').toString().trim();
+    const id = raw.toLowerCase();
+
+    // 👉 Región Metropolitana → usamos código genérico "STGO"
+    if (
+      id === '13101' || // Santiago (DPA)
+      id === '13114' || // Las Condes (DPA)
+      id === 'las condes' ||
+      id === 'santiago' ||
+      id === 'providencia'
+    ) {
+      return {
+        chilexpressCountyCode: 'STGO',
+        chilexpressCountyName: 'SANTIAGO',
+      };
+    }
+
+    // 👉 Región de Valparaíso → código genérico "PROV"
+    if (
+      id === '5101' ||
+      id === 'valparaíso' ||
+      id === 'valparaiso' ||
+      id === 'viña del mar' ||
+      id === 'vina del mar'
+    ) {
+      return {
+        chilexpressCountyCode: 'PROV',
+        chilexpressCountyName: 'VALPARAÍSO',
+      };
+    }
+
+    // Si llegamos acá, no tenemos mapping
+    throw new NotFoundException(
+      `No existe mapping Chilexpress para communeId=${raw}`,
+    );
   }
 }

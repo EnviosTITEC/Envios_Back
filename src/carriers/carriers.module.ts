@@ -1,20 +1,22 @@
+// src/carriers/carriers.module.ts
 import { Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CarriersService } from './carriers.service';
+import { HttpModule } from '@nestjs/axios';
+
 import { CarriersController } from './carriers.controller';
+import { CarriersService } from './carriers.service';
 import { Carrier, CarrierSchema } from './schemas/carrier.schema';
-import { CarriersSeed } from './carriers.seed';
 import { ChilexpressAdapter } from './adapters/chilexpress-adapters';
+import { GeoModule } from '../geo/geo.module';
 
 @Module({
   imports: [
+    MongooseModule.forFeature([{ name: Carrier.name, schema: CarrierSchema }]),
     HttpModule,
-    MongooseModule.forFeature([
-      { name: Carrier.name, schema: CarrierSchema },
-    ]),
+    GeoModule,
   ],
   controllers: [CarriersController],
-  providers: [CarriersService, CarriersSeed, ChilexpressAdapter],
+  providers: [CarriersService, ChilexpressAdapter],
+  exports: [CarriersService],
 })
 export class CarriersModule {}

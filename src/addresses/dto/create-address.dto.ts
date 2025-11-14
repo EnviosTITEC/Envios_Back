@@ -1,45 +1,48 @@
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsOptional } from 'class-validator';
 
 export class CreateAddressDto {
-  @ApiProperty({ required: true, example: 'Av. Siempre Viva' })
+  @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   street: string;
 
-  @ApiProperty({ required: true, example: '742' })
+  @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   number: string;
 
-  @ApiProperty({ required: true, example: 'Springfield' })
+  // Nombre de la comuna (Las Condes, Viña del Mar, etc.)
+  @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   comune: string;
 
-  @ApiProperty({ required: true, example: 'Springfield' })
+  // Código DPA de la comuna (13114, 5109, etc.) - OPCIONAL
+  @ApiProperty({
+    required: false,
+    description: 'Código DPA de la comuna (opcional, se usa para cotizar)',
+  })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
+  communeCode?: string;
+
+  @ApiProperty()
+  @IsString()
   province: string;
 
-  @ApiProperty({ required: true, example: 'Región Metropolitana' })
+  @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   region: string;
 
-  // 🔄 Cambiado: ahora es opcional
-  @ApiPropertyOptional({ example: '1234567' })
-  @IsString()
+  @ApiProperty({ required: false })
   @IsOptional()
+  @IsString()
   postalCode?: string;
 
-  @ApiPropertyOptional({ example: 'Casa azul, portón rojo' })
-  @IsString()
+  @ApiProperty({ required: false })
   @IsOptional()
+  @IsString()
   references?: string;
 
-  @ApiProperty({ required: true, example: 'userId123' })
+  @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   userId: string;
 }
