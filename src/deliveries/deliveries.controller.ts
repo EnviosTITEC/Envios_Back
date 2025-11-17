@@ -95,11 +95,6 @@ export class DeliveriesController {
     return this.deliveryService.createFromPayment(dto);
   }
 
-  @Post()
-  @ApiOperation({ summary: 'Crear envío (legacy)' })
-  create(@Body() dto: DeliveryDto) {
-    return this.deliveryService.create(dto);
-  }
 
   @Get()
   @ApiOperation({ summary: 'Listar todos los envíos' })
