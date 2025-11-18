@@ -31,7 +31,7 @@ export interface GeoRegion {
 export interface ChilexpressRegion {
   regionId: string;
   regionName: string;
-  regionCode: string;
+  ineRegionCode?: number;
 }
 
 export interface ChilexpressCoverageArea {
@@ -134,12 +134,12 @@ export class GeoService {
   async findChilexpressCountyByName(communeName: string): Promise<{
     countyCode: string;
     countyName: string;
-    regionCode: string;
+    regionId: string;
   } | null> {
     const regions = await this.getChilexpressRegions();
     
     for (const region of regions) {
-      const areas = await this.getChilexpressCoverageAreas(region.regionCode);
+      const areas = await this.getChilexpressCoverageAreas(region.regionId);
       
       for (const area of areas) {
         if (
@@ -149,7 +149,7 @@ export class GeoService {
           return {
             countyCode: area.countyCode,
             countyName: area.countyName,
-            regionCode: region.regionCode,
+            regionId: region.regionId,
           };
         }
       }

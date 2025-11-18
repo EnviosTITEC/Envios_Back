@@ -20,13 +20,12 @@ export class Address {
   @Prop({ required: true })
   comune: string;
 
-  // NUEVO: código DPA de la comuna (ej: "13114" Las Condes)
-  // Lo dejamos opcional para no romper direcciones antiguas
+  // NUEVO: código Chilexpress de la comuna (ej: "STGO")
   @Prop()
-  communeCode?: string;
+  countyCode?: string;
 
-  @Prop({ required: true })
-  province: string;
+  @Prop()
+  province?: string;
 
   @Prop()
   region?: string;

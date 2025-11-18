@@ -15,18 +15,22 @@ export class CreateAddressDto {
   @IsString()
   comune: string;
 
-  // Código DPA de la comuna (13114, 5109, etc.) - OPCIONAL
+  // Código Chilexpress (STGO, VDMAR, etc.)
   @ApiProperty({
     required: false,
-    description: 'Código DPA de la comuna (opcional, se usa para cotizar)',
+    description: 'Código Chilexpress (opcional, se usa para cotizar)',
   })
   @IsOptional()
   @IsString()
-  communeCode?: string;
+  countyCode?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    description: 'Nombre de la provincia (opcional, dejado por compatibilidad)',
+  })
+  @IsOptional()
   @IsString()
-  province: string;
+  province?: string;
 
   @ApiProperty()
   @IsString()
