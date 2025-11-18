@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración de Envíos con Carrito y Pagos</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 20px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+        }
+        .flow-box {
+            background: #ecf0f1;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .checkmark {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        .important {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Integración de Envíos con Carrito y Pagos</h1>
+
+    <h2>Resumen Ejecutivo</h2>
+    <p>Nuestro microservicio de Envíos se integra con ustedes para crear automáticamente los envíos cuando un pago se completa. <strong>No necesitan modificar sus bases de datos</strong>, solo implementar algunas llamadas a nuestros endpoints.</p>
+
+    <h2>📊 Flujo General</h2>
+    <div class="flow-box">
+CARRITO → ENVÍOS (frontend) → PAGOS → ENVÍOS (backend) → Notificación Vendedor
+    </div>
+
+    <ol>
+        <li>Usuario confirma carrito</li>
+        <li>Es redirigido a nuestra página de selección de envío</li>
+        <li>Elige carrier y ve cotización</li>
+        <li>Es redirigido a Pagos con datos guardados</li>
+        <li>Completa el pago</li>
+        <li>Pagos automáticamente crea el envío en nuestro sistema</li>
+    </ol>
+
+    <h2>🛒 GRUPO CARRITO - Lo que necesitamos</h2>
+
+    <h3>Endpoint requerido:</h3>
+    <pre><code>GET /api/cart/{cartId}</code></pre>
+
+    <h3>Respuesta esperada:</h3>
+    <pre><code>{
+  "id_carrito": "cart_123",
+  "id_vendedor": "seller_789",
+  "id_usuario": "user_456",
+  "items": [
+    {
+      "id_producto": "prod_12345",
+      "nombre": "iPhone 14 Pro 256GB",
+      "cantidad": 1,
+      "precio": 899990
+    }
+  ],
+  "total": 899990,
+  "package": {
+    "weight": 2.5,
+    "length": 30,
+    "width": 20,
+    "height": 15
+  }
+}</code></pre>
+
+    <div class="warning">
+        <h3>⚠️ Campo NUEVO requerido: <code>package</code></h3>
+        <p>Necesitamos que calculen las <strong>dimensiones del paquete</strong> basándose en los productos del carrito:</p>
+        <ul>
+            <li><strong>weight</strong> (kg): Suma de pesos de todos los productos</li>
+            <li><strong>length</strong> (cm): Largo del paquete</li>
+            <li><strong>width</strong> (cm): Ancho del paquete</li>
+            <li><strong>height</strong> (cm): Alto del paquete</li>
+        </ul>
+    </div>
+
+    <h3>Opciones para calcularlo:</h3>
+
+    <h4>1. Tener dimensiones en cada producto (recomendado):</h4>
+    <pre><code>{
+  "id_producto": "prod_123",
+  "peso": 0.5,
+  "dimensiones": { "length": 20, "width": 15, "height": 10 }
+}</code></pre>
+
+    <h4>2. Usar dimensiones por defecto:</h4>
+    <pre><code>const package = {
+  weight: items.reduce((sum, item) => sum + (item.peso || 1) * item.cantidad, 0),
+  length: 30,  // Valores estándar
+  width: 20,
+  height: 15
+};</code></pre>
+
+    <h4>3. Dimensiones fijas por categoría:</h4>
+    <pre><code>const dimensionsByCategory = {
+  'electronica': { length: 30, width: 20, height: 15 },
+  'ropa': { length: 40, width: 30, height: 10 },
+  'default': { length: 30, width: 20, height: 15 }
+};</code></pre>
+
+    <h3>Acción requerida:</h3>
+    <p>Cuando el usuario haga click en <strong>"Confirmar carrito"</strong> o <strong>"Ir a pagar"</strong>, redirijan a:</p>
+    <pre><code>window.location.href = `https://envios-frontend.com/shipping?cartId=${cartId}`;</code></pre>
+
+    <div class="important">
+        <p><span class="checkmark">✅</span> <strong>Eso es todo lo que necesitamos de ustedes.</strong></p>
+    </div>
+
+    <h2>💳 GRUPO PAGOS - Lo que necesitamos</h2>
+
+    <h3>1. En su FRONTEND de checkout:</h3>
+    <p>Cuando el usuario llegue desde nuestro frontend, leer los datos de envío:</p>
+    <pre><code>// Opción A: De la URL
+const urlParams = new URLSearchParams(window.location.search);
+const shippingData = JSON.parse(decodeURIComponent(urlParams.get('shipping')));
+
+// Opción B: De localStorage
+const shippingData = JSON.parse(localStorage.getItem('shipping_selection'));
+
+// shippingData contiene:
+// {
+//   originAddressId: "addr_456",
+//   destinationAddressId: "addr_123",
+//   carrierName: "Chilexpress",
+//   serviceType: "PRIORITARIO",
+//   estimatedCost: 8812,
+//   package: { weight: 2.5, length: 30, width: 20, height: 15 }
+// }
+
+// Mostrar en el resumen:
+const totalConEnvio = cartTotal + shippingData.estimatedCost;</code></pre>
+
+    <p><strong>Guardar temporalmente</strong> (para usarlo después):</p>
+    <pre><code>sessionStorage.setItem('current_shipping', JSON.stringify(shippingData));</code></pre>
+
+    <h3>2. En su BACKEND cuando el pago se completa:</h3>
+    <p>Hacer un POST a nuestro microservicio:</p>
+    <pre><code>async function onPaymentCompleted(payment) {
+  // 1. Obtener info del carrito (CON dimensiones del paquete)
+  const cartResponse = await fetch(`${CART_SERVICE_URL}/api/cart/${payment.id_carrito}`);
+  const cart = await cartResponse.json();
+  
+  // 2. Recuperar datos de envío (del frontend/sesión del usuario)
+  const shippingData = getUserShippingData(payment);
+  
+  // 3. Crear el envío
+  try {
+    const response = await fetch(`${ENVIOS_SERVICE_URL}/api/deliveries/create-from-payment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        paymentId: payment.id_pagos,
+        cartId: payment.id_carrito,
+        userId: payment.id_usuario,
+        sellerId: cart.id_vendedor,
+        totalAmount: payment.monto,
+        items: cart.items.map(item => ({
+          productId: item.id_producto,
+          name: item.nombre,
+          quantity: item.cantidad,
+          price: item.precio
+        })),
+        package: cart.package,  // 👈 Viene del carrito
+        shippingInfo: {
+          originAddressId: shippingData.originAddressId,
+          destinationAddressId: shippingData.destinationAddressId,
+          carrierName: shippingData.carrierName,
+          serviceType: shippingData.serviceType,
+          estimatedCost: shippingData.estimatedCost
+        }
+      })
+    });
+    
+    const delivery = await response.json();
+    console.log('✅ Envío creado:', delivery.trackingNumber);
+    
+    return delivery.trackingNumber;
+    
+  } catch (error) {
+    console.error('❌ Error creando envío:', error);
+  }
+}</code></pre>
+
+    <div class="important">
+        <p><span class="checkmark">✅</span> <strong>Eso es todo lo que necesitamos de ustedes.</strong></p>
+    </div>
+
+    <h2>🔗 URLs y Configuración</h2>
+
+    <h3>Endpoints que exponemos:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Endpoint</th>
+                <th>Método</th>
+                <th>Propósito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>/api/addresses</td>
+                <td>GET</td>
+                <td>Listar direcciones del usuario</td>
+            </tr>
+            <tr>
+                <td>/api/addresses</td>
+                <td>POST</td>
+                <td>Crear nueva dirección</td>
+            </tr>
+            <tr>
+                <td>/api/geo/chilexpress/regions</td>
+                <td>GET</td>
+                <td>Obtener regiones</td>
+            </tr>
+            <tr>
+                <td>/api/geo/chilexpress/coverage-areas</td>
+                <td>GET</td>
+                <td>Obtener comunas por región</td>
+            </tr>
+            <tr>
+                <td>/api/carriers/quote</td>
+                <td>POST</td>
+                <td>Cotizar envío</td>
+            </tr>
+            <tr>
+                <td>/api/deliveries/create-from-payment</td>
+                <td>POST</td>
+                <td><strong>Crear envío</strong> (Pagos llama esto)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Variables de entorno:</h3>
+    <pre><code># Para desarrollo local
+ENVIOS_SERVICE_URL=http://localhost:3000
+CART_SERVICE_URL=http://localhost:4000
+
+# Para producción
+ENVIOS_SERVICE_URL=https://envios.pulgashop.com
+CART_SERVICE_URL=https://carrito.pulgashop.com</code></pre>
+
+    <h2>❓ Preguntas Frecuentes</h2>
+
+    <h3>Q: ¿Tenemos que modificar nuestra base de datos?</h3>
+    <p><strong>A:</strong> No, solo usan localStorage/sessionStorage y hacen el POST cuando el pago se completa.</p>
+
+    <h3>Q: ¿De dónde salen las dimensiones del paquete?</h3>
+    <p><strong>A:</strong> <strong>Carrito</strong> debe calcularlas y devolverlas en su endpoint GET /api/cart/{cartId}. Pueden usar dimensiones por producto, por categoría, o un estándar fijo.</p>
+
+    <h3>Q: ¿Qué pasa si falla el POST a Envíos?</h3>
+    <p><strong>A:</strong> El pago ya está completado, así que deberían reintentar o registrar el error para procesarlo manualmente después.</p>
+
+    <h3>Q: ¿Cómo obtenemos la dirección del vendedor (originAddressId)?</h3>
+    <p><strong>A:</strong> Nosotros se la pasamos en el <code>shippingData</code>. La obtenemos de nuestro módulo de direcciones cuando el vendedor se registra.</p>
+
+    <h3>Q: ¿El monto del pago incluye el costo de envío?</h3>
+    <p><strong>A:</strong> Sí, ustedes deben sumar <code>cartTotal + shippingData.estimatedCost</code> antes de crear el pago.</p>
+
+    <h3>Q: ¿Qué pasa si los productos no tienen peso/dimensiones?</h3>
+    <p><strong>A:</strong> <strong>Carrito</strong> debe usar valores por defecto razonables (ej: 1kg, 30x20x15cm) o pedirle al grupo de Productos que agreguen esos campos.</p>
+
+    <h2>📦 Documentación Completa</h2>
+    <p>Les compartiremos:</p>
+    <ul>
+        <li><span class="checkmark">✅</span> <code>docs/CREACION_ENVIOS.md</code> - Documentación técnica completa</li>
+        <li><span class="checkmark">✅</span> <code>docs/COTIZACION.md</code> - Cómo funciona el sistema de cotización</li>
+        <li><span class="checkmark">✅</span> Swagger UI: <code>http://localhost:3000/api</code> - API interactiva para probar</li>
+    </ul>
+
+    <h2>🤝 Siguiente Paso</h2>
+    <p>Confirmen que tienen claro:</p>
+    <ol>
+        <li><strong>Carrito</strong>: 
+            <ul>
+                <li>Endpoint GET /api/cart/{cartId} <strong>con campo <code>package</code></strong></li>
+                <li>Redirección a nuestro frontend</li>
+            </ul>
+        </li>
+        <li><strong>Pagos</strong>: 
+            <ul>
+                <li>Leer shipping del storage</li>
+                <li>Hacer POST cuando pago se completa (usando <code>cart.package</code>)</li>
+            </ul>
+        </li>
+    </ol>
+
+    <p><strong>¿Alguna duda o necesitan más detalles?</strong></p>
+
+    <hr>
+    <p style="text-align: center; color: #7f8c8d; margin-top: 40px;">
+        <em>Equipo de Envíos - PulgaShop | Noviembre 2025</em>
+    </p>
+</body>
+</html>

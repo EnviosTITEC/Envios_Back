@@ -16,7 +16,31 @@
 
 This is a NestJS backend project for "PulgaShop - Microservicio Envíos" (Shipping Microservice), developed for a university course (GPI - Universidad de Valparaíso). It provides a RESTful API with authentication and shipping management capabilities.
 
-## Authentication
+## 🌐 API Endpoints
+
+### Cotización de Envíos ⭐ NUEVO
+
+- **POST /api/carriers/quote**: Cotizar costo de envío entre dos comunas
+  ```json
+  {
+    "originCommuneId": "13101",
+    "destinationCommuneId": "05109",
+    "package": {
+      "weight": "2.5",
+      "height": "15",
+      "width": "25",
+      "length": "35"
+    },
+    "productType": 3,
+    "contentType": 1,
+    "declaredWorth": "25000",
+    "deliveryTime": 0
+  }
+  ```
+  
+  📖 **[Ver documentación completa de cotización](./docs/COTIZACION.md)**
+
+### Autenticación
 
 The API uses JWT (JSON Web Token) based authentication. Protected routes require a valid JWT token in the Authorization header.
 
