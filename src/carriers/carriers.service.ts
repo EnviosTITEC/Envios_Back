@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 
 import { Carrier, CarrierDocument } from './schemas/carrier.schema';
 import { ChilexpressAdapter } from './adapters/chilexpress-adapters';
-import { DPA_TO_CHILEXPRESS_COUNTY } from './chilexpress-dpa-mapping';
 
 import { CreateCarrierDto } from './dto/create-carrier.dto';
 import { UpdateCarrierDto } from './dto/update-carrier.dto';
@@ -46,22 +45,10 @@ export class CarriersService {
     return { deleted: true };
   }
 
-  private resolveChilexpressCounty(communeId: string): string {
-    const county = DPA_TO_CHILEXPRESS_COUNTY[communeId];
-    if (!county)
-      throw new NotFoundException(
-        `No existe mapping Chilexpress para communeId=${communeId}`,
-      );
-    return county;
-  }
-
   async quote(dto: any) {
-    const origin = this.resolveChilexpressCounty(dto.originCommuneId);
-    const dest = this.resolveChilexpressCounty(dto.destinationCommuneId);
-
     return this.chilexpress.getQuote({
-      originCountyCode: origin,
-      destinationCountyCode: dest,
+      originCountyCode: dto.originCountyCode,
+      destinationCountyCode: dto.destinationCountyCode,
       package: dto.package,
       productType: dto.productType,
       contentType: dto.contentType,

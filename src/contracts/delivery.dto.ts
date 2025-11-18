@@ -33,18 +33,18 @@ class PackageDto {
  */
 export class DeliveryDto {
   @ApiProperty({
-    example: '13101',
+    example: 'STGO',
     description: 'Origin commune DPA code (API Gobierno)',
   })
   @IsString()
-  originCommuneId!: string;
+  originCountyCode!: string;
 
   @ApiProperty({
-    example: '5109',
+    example: 'PROV',
     description: 'Destination commune DPA code (API Gobierno)',
   })
   @IsString()
-  destinationCommuneId!: string;
+  destinationCountyCode!: string;
 
   @ApiProperty({ type: PackageDto })
   @ValidateNested()
