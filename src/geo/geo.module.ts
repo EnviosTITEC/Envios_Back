@@ -8,6 +8,6 @@ import { GeoController } from './geo.controller';
   imports: [HttpModule],
   controllers: [GeoController],
   providers: [GeoService],
-  exports: [GeoService], // 👈 IMPORTANTE: exportar el servicio
+  exports: [GeoService],
 })
 export class GeoModule {}
