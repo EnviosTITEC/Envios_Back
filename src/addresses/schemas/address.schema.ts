@@ -16,19 +16,17 @@ export class Address {
   @Prop({ required: true })
   number: string;
 
-  // Nombre de la comuna (lo que muestras en tablas, etc.)
   @Prop({ required: true })
-  comune: string;
+  communeId: string;
 
-  // NUEVO: código Chilexpress de la comuna (ej: "STGO")
   @Prop()
   countyCode?: string;
 
   @Prop()
   province?: string;
 
-  @Prop()
-  region?: string;
+  @Prop({ required: true })
+  regionId: string;
 
   @Prop()
   postalCode?: string;
@@ -37,7 +35,7 @@ export class Address {
   references?: string;
 
   @Prop({ required: true })
-  userId: string; // referencia a usuario
+  userId: string;
 }
 
 export const AddressSchema = SchemaFactory.createForClass(Address);

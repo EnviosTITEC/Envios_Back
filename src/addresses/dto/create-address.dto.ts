@@ -10,15 +10,13 @@ export class CreateAddressDto {
   @IsString()
   number: string;
 
-  // Nombre de la comuna (Las Condes, Viña del Mar, etc.)
   @ApiProperty()
   @IsString()
-  comune: string;
+  communeId: string;
 
-  // Código Chilexpress (STGO, VDMAR, etc.)
   @ApiProperty({
     required: false,
-    description: 'Código Chilexpress (opcional, se usa para cotizar)',
+    description: 'Código Chilexpress',
   })
   @IsOptional()
   @IsString()
@@ -26,7 +24,6 @@ export class CreateAddressDto {
 
   @ApiProperty({
     required: false,
-    description: 'Nombre de la provincia (opcional, dejado por compatibilidad)',
   })
   @IsOptional()
   @IsString()
@@ -34,7 +31,7 @@ export class CreateAddressDto {
 
   @ApiProperty()
   @IsString()
-  region: string;
+  regionId: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
