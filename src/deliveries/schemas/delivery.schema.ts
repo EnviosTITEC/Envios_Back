@@ -148,4 +148,3 @@ export const DeliverySchema = SchemaFactory.createForClass(Delivery);
 // Índices compuestos para queries frecuentes
 DeliverySchema.index({ userId: 1, createdAt: -1 });
 DeliverySchema.index({ sellerId: 1, status: 1 });
-DeliverySchema.index({ trackingNumber: 1 }, { unique: true });
