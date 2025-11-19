@@ -8,6 +8,7 @@ export interface UserDocument extends User, Document {
 }
 
 @Schema({
+  collection: 'usuarios', // Cambiado para cumplir con la nomenclatura
   timestamps: true,
   toJSON: {
     virtuals: true,
@@ -21,22 +22,22 @@ export interface UserDocument extends User, Document {
 })
 export class User {
   @Prop({ required: true })
-  name: string;
+  nombre: string; // Cambiado de 'name' a 'nombre'
 
   @Prop({ required: true })
-  lastName: string;
+  apellido: string; // Cambiado de 'lastName' a 'apellido'
 
   @Prop({ required: true, unique: true })
-  email: string;
+  correo: string; // Cambiado de 'email' a 'correo'
 
   @Prop({ required: true })
-  password: string;
+  contrasena: string; // Cambiado de 'password' a 'contrasena'
 
-  @Prop({ default: 'user' }) // 'admin' o 'user'
-  role: string;
+  @Prop({ default: 'usuario' }) // Cambiado de 'role' a 'rol'
+  rol: string;
 
   @Prop({ default: true })
-  isActive: boolean;
+  activo: boolean; // Cambiado de 'isActive' a 'activo'
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

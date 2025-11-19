@@ -13,7 +13,7 @@ export class DeliveriesService {
   private readonly logger = new Logger(DeliveriesService.name);
 
   constructor(
-    @InjectModel(Delivery.name) private deliveryModel: Model<Delivery>,
+    @InjectModel('envios') private deliveryModel: Model<Delivery>, // Cambiado de Delivery.name a 'envios'
   ) {}
 
   /**
@@ -40,18 +40,18 @@ export class DeliveriesService {
    * Endpoint llamado por el microservicio de Pagos
    */
   async createFromPayment(dto: CreateDeliveryFromPaymentDto): Promise<DeliveryResponseDto> {
-    this.logger.log(`Creating delivery from payment: ${dto.paymentId}`);
+    this.logger.log(`Creating delivery from payment: ${dto.id_pago}`);
 
     // Validar que no exista ya un envío para este pago
-    const existingDelivery = await this.deliveryModel.findOne({ paymentId: dto.paymentId });
+    const existingDelivery = await this.deliveryModel.findOne({ id_pago: dto.id_pago });
     if (existingDelivery) {
-      throw new BadRequestException(`Delivery already exists for payment ${dto.paymentId}`);
+      throw new BadRequestException(`Delivery already exists for payment ${dto.id_pago}`);
     }
 
     // Generar tracking number único
     let trackingNumber = this.generateTrackingNumber();
     let attempts = 0;
-    while (await this.deliveryModel.findOne({ trackingNumber })) {
+    while (await this.deliveryModel.findOne({ numero_seguimiento: trackingNumber })) {
       trackingNumber = this.generateTrackingNumber();
       attempts++;
       if (attempts > 10) {
@@ -60,65 +60,70 @@ export class DeliveriesService {
     }
 
     // Calcular fecha estimada de entrega
-    const estimatedDeliveryDate = this.calculateEstimatedDelivery(dto.shippingInfo.serviceType);
+    const estimatedDeliveryDate = this.calculateEstimatedDelivery(dto.info_envio.tipo_servicio);
 
     // Calcular valor declarado (si no viene, usar monto total)
-    const declaredWorth = dto.declaredWorth || dto.totalAmount;
+    const declaredWorth = dto.valor_declarado || dto.monto_total;
 
     // Crear el envío
     const delivery = new this.deliveryModel({
-      trackingNumber,
-      status: DeliveryStatus.PREPARANDO,
-      paymentId: dto.paymentId,
-      cartId: dto.cartId,
-      userId: dto.userId,
-      sellerId: dto.sellerId,
-      carrierId: dto.shippingInfo.carrierName.toLowerCase(),
-      carrierName: dto.shippingInfo.carrierName,
-      serviceType: dto.shippingInfo.serviceType,
-      estimatedCost: dto.shippingInfo.estimatedCost,
-      currency: 'CLP',
-      originAddressId: dto.shippingInfo.originAddressId,
-      destinationAddressId: dto.shippingInfo.destinationAddressId,
-      weight: dto.package.weight,
-      dimensions: {
-        length: dto.package.length,
-        width: dto.package.width,
-        height: dto.package.height,
+      numero_seguimiento: trackingNumber,
+      estado: DeliveryStatus.PREPARANDO,
+      id_pago: dto.id_pago,
+      id_carrito: dto.id_carrito,
+      id_usuario: dto.id_usuario,
+      id_vendedor: dto.id_vendedor,
+      id_transportista: dto.info_envio.nombre_transportista.toLowerCase(),
+      nombre_transportista: dto.info_envio.nombre_transportista,
+      tipo_servicio: dto.info_envio.tipo_servicio,
+      costo_estimado: dto.info_envio.costo_estimado,
+      moneda: 'CLP',
+      id_direccion_origen: dto.info_envio.id_direccion_origen,
+      id_direccion_destino: dto.info_envio.id_direccion_destino,
+      peso: dto.paquete.peso,
+      dimensiones: {
+        largo: dto.paquete.largo,
+        ancho: dto.paquete.ancho,
+        alto: dto.paquete.alto,
       },
-      declaredWorth,
-      fragile: false, // Por defecto, puede mejorarse
+      valor_declarado: declaredWorth,
+      fragil: false, // Por defecto, puede mejorarse
       items: dto.items,
-      estimatedDeliveryDate,
-      notes: dto.notes,
+      fecha_entrega_estimada: estimatedDeliveryDate,
+      notas: dto.notas,
     });
 
     const saved = await delivery.save();
 
     // TODO: Notificar al vendedor (email/webhook)
-    this.logger.log(`✉️ TODO: Notify seller ${dto.sellerId} about new shipment ${trackingNumber}`);
+    this.logger.log(`✉️ TODO: Notify seller ${dto.id_vendedor} about new shipment ${trackingNumber}`); // Cambiado de 'sellerId' a 'id_vendedor'
     // Aquí se integrará con el sistema de notificaciones
     // Ejemplo: await this.notificationsService.notifySeller(dto.sellerId, saved);
 
     this.logger.log(`Delivery created successfully: ${trackingNumber}`);
 
     return {
-      trackingNumber: saved.trackingNumber,
-      status: saved.status,
-      paymentId: saved.paymentId,
-      cartId: saved.cartId,
-      userId: saved.userId,
-      sellerId: saved.sellerId,
-      carrierName: saved.carrierName,
-      serviceType: saved.serviceType,
-      estimatedCost: saved.estimatedCost,
-      currency: saved.currency,
-      originAddressId: saved.originAddressId,
-      destinationAddressId: saved.destinationAddressId,
-      items: saved.items,
-      estimatedDeliveryDate: saved.estimatedDeliveryDate,
-      createdAt: new Date(),
+      numero_seguimiento: saved.numero_seguimiento, // Cambiado de 'trackingNumber'
+      estado: saved.estado, // Cambiado de 'status'
+      id_pago: saved.id_pago, // Cambiado de 'paymentId'
+      id_carrito: saved.id_carrito, // Cambiado de 'cartId'
+      id_usuario: saved.id_usuario, // Cambiado de 'userId'
+      id_vendedor: saved.id_vendedor, // Cambiado de 'sellerId'
+      nombre_transportista: saved.nombre_transportista, // Cambiado de 'carrierName'
+      tipo_servicio: saved.tipo_servicio, // Cambiado de 'serviceType'
+      costo_estimado: saved.costo_estimado, // Cambiado de 'estimatedCost'
+      moneda: saved.moneda, // Cambiado de 'currency'
+      id_direccion_origen: saved.id_direccion_origen, // Cambiado de 'originAddressId'
+      id_direccion_destino: saved.id_direccion_destino, // Cambiado de 'destinationAddressId'
+      fecha_entrega_estimada: saved.fecha_entrega_estimada, // Cambiado de 'estimatedDeliveryDate'
+      fecha_creacion: new Date(), // Cambiado de 'createdAt' a 'fecha_creacion'
       message: 'Envío creado exitosamente. El vendedor ha sido notificado.',
+      items: saved.items.map(item => ({
+        id_producto: item.productId,
+        nombre: item.name,
+        cantidad: item.quantity,
+        precio: item.price,
+      })), // Convertir nombres de propiedades al formato esperado
     };
   }
 

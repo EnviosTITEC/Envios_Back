@@ -19,11 +19,15 @@ export enum DeliverySpeed {
   OVERNIGHT = 'overnight',
 }
 
-@Schema({ collection: 'deliveries', timestamps: true, toJSON: { virtuals: true } })
+@Schema({
+  collection: 'envios', // Cambiado para cumplir con la nomenclatura
+  timestamps: true,
+  toJSON: { virtuals: true },
+})
 export class Delivery {
   // Tracking y estado
   @Prop({ required: true, unique: true, index: true })
-  trackingNumber: string;
+  numero_seguimiento: string; // Cambiado de 'trackingNumber' a 'numero_seguimiento'
 
   @Prop({ 
     type: String, 
@@ -31,54 +35,54 @@ export class Delivery {
     default: DeliveryStatus.PREPARANDO,
     required: true 
   })
-  status: DeliveryStatus;
+  estado: DeliveryStatus; // Cambiado de 'status' a 'estado'
 
   // Referencias a otros microservicios
   @Prop({ required: true, index: true })
-  paymentId: string;
+  id_pago: string; // Cambiado de 'paymentId' a 'id_pago'
 
   @Prop({ required: true, index: true })
-  cartId: string;
+  id_carrito: string; // Cambiado de 'cartId' a 'id_carrito'
 
   @Prop({ required: true, index: true })
-  userId: string;
+  id_usuario: string; // Cambiado de 'userId' a 'id_usuario'
 
   @Prop({ required: true, index: true })
-  sellerId: string;
+  id_vendedor: string; // Cambiado de 'sellerId' a 'id_vendedor'
 
   // Información del carrier
   @Prop({ required: true })
-  carrierId: string;
+  id_transportista: string; // Cambiado de 'carrierId' a 'id_transportista'
 
   @Prop({ required: true })
-  carrierName: string;
+  nombre_transportista: string; // Cambiado de 'carrierName' a 'nombre_transportista'
 
   @Prop({ required: true })
-  serviceType: string; // PRIORITARIO, EXPRESS, etc.
+  tipo_servicio: string; // Cambiado de 'serviceType' a 'tipo_servicio'
 
   @Prop({ required: true })
-  estimatedCost: number;
+  costo_estimado: number; // Cambiado de 'estimatedCost' a 'costo_estimado'
 
   @Prop({ default: 'CLP' })
-  currency: string;
+  moneda: string; // Cambiado de 'currency' a 'moneda'
 
   // Direcciones (IDs de addresses collection)
   @Prop({ required: true })
-  originAddressId: string;
+  id_direccion_origen: string; // Cambiado de 'originAddressId' a 'id_direccion_origen'
 
   @Prop({ required: true })
-  destinationAddressId: string;
+  id_direccion_destino: string; // Cambiado de 'destinationAddressId' a 'id_direccion_destino'
 
   // Códigos postales (legacy - mantener por compatibilidad)
   @Prop()
-  originPostalCode: string;
+  codigo_postal_origen: string; // Cambiado de 'originPostalCode' a 'codigo_postal_origen'
 
   @Prop()
-  destinationPostalCode: string;
+  codigo_postal_destino: string; // Cambiado de 'destinationPostalCode' a 'codigo_postal_destino'
 
   // Información del paquete
   @Prop({ required: true })
-  weight: number;
+  peso: number; // Cambiado de 'weight' a 'peso'
 
   @Prop({
     type: {
@@ -88,24 +92,24 @@ export class Delivery {
     },
     required: true,
   })
-  dimensions: {
+  dimensiones: {
     length: number;
     width: number;
     height: number;
-  };
+  }; // Cambiado de 'dimensions' a 'dimensiones'
 
   @Prop({ 
     type: String, 
     enum: DeliverySpeed, 
     default: DeliverySpeed.STANDARD 
   })
-  deliverySpeed: DeliverySpeed;
+  velocidad_envio: DeliverySpeed; // Cambiado de 'deliverySpeed' a 'velocidad_envio'
 
   @Prop({ required: true })
-  declaredWorth: number; // Valor declarado para seguro
+  valor_declarado: number; // Cambiado de 'declaredWorth' a 'valor_declarado'
 
   @Prop({ default: false })
-  fragile: boolean;
+  fragil: boolean; // Cambiado de 'fragile' a 'fragil'
 
   // Items del carrito (snapshot para referencia)
   @Prop({
@@ -126,21 +130,21 @@ export class Delivery {
 
   // Fechas
   @Prop({ type: Date })
-  estimatedDeliveryDate: Date;
+  fecha_entrega_estimada: Date; // Cambiado de 'estimatedDeliveryDate' a 'fecha_entrega_estimada'
 
   @Prop({ type: Date })
-  actualDeliveryDate: Date;
+  fecha_entrega_real: Date; // Cambiado de 'actualDeliveryDate' a 'fecha_entrega_real'
 
   @Prop({ type: Date })
-  pickupDate: Date;
+  fecha_retiro: Date; // Cambiado de 'pickupDate' a 'fecha_retiro'
 
   // Etiqueta de envío (generación futura)
   @Prop()
-  labelUrl: string;
+  url_etiqueta: string; // Cambiado de 'labelUrl' a 'url_etiqueta'
 
   // Notas adicionales
   @Prop()
-  notes: string;
+  notas: string; // Sin cambios, ya que cumple con la nomenclatura
 }
 
 export const DeliverySchema = SchemaFactory.createForClass(Delivery);

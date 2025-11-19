@@ -2,48 +2,59 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsOptional } from 'class-validator';
 
 export class CreateAddressDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'calle falsa', description: 'nombre de la calle' })
   @IsString()
-  street: string;
+  nombre_calle: string; // Cambiado de 'street'
 
-  @ApiProperty()
+  @ApiProperty({ example: '123', description: 'número de la dirección' })
   @IsString()
-  number: string;
+  numero: string; // Cambiado de 'number'
 
-  @ApiProperty()
+  @ApiProperty({ example: '13101', description: 'id de la comuna' })
   @IsString()
-  communeId: string;
-
-  @ApiProperty({
-    required: false,
-    description: 'Código Chilexpress',
-  })
-  @IsOptional()
-  @IsString()
-  countyCode?: string;
+  id_comuna: string; // Cambiado de 'communeId'
 
   @ApiProperty({
     required: false,
+    example: 'SCL',
+    description: 'código chilexpress de la comuna',
   })
   @IsOptional()
   @IsString()
-  province?: string;
+  codigo_comuna?: string; // Cambiado de 'countyCode'
 
-  @ApiProperty()
-  @IsString()
-  regionId: string;
-
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    required: false,
+    example: 'provincia central',
+    description: 'nombre de la provincia',
+  })
   @IsOptional()
   @IsString()
-  postalCode?: string;
+  nombre_provincia?: string; // Cambiado de 'province'
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ example: '13', description: 'id de la región' })
+  @IsString()
+  id_region: string; // Cambiado de 'regionId'
+
+  @ApiProperty({
+    required: false,
+    example: '12345',
+    description: 'código postal',
+  })
   @IsOptional()
   @IsString()
-  references?: string;
+  codigo_postal?: string; // Cambiado de 'postalCode'
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    example: 'casa amarilla',
+    description: 'referencias adicionales',
+  })
+  @IsOptional()
   @IsString()
-  userId: string;
+  referencias?: string; // Cambiado de 'references'
+
+  @ApiProperty({ example: 'usuario_123', description: 'id del usuario asociado' })
+  @IsString()
+  id_usuario: string; // Cambiado de 'userId'
 }

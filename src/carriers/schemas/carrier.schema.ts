@@ -3,19 +3,23 @@ import { Document } from 'mongoose';
 
 export type CarrierDocument = Carrier & Document;
 
-@Schema({ timestamps: true, toJSON: { virtuals: true } })
+@Schema({
+  collection: 'transportistas', // Cambiado para cumplir con la nomenclatura
+  timestamps: true,
+  toJSON: { virtuals: true },
+})
 export class Carrier {
   @Prop({ required: true, unique: true, index: true })
-  code: string;
+  codigo: string; // Cambiado de 'code' a 'codigo'
 
   @Prop({ required: true })
-  name: string;
+  nombre: string; // Cambiado de 'name' a 'nombre'
 
   @Prop({ type: JSON, required: true })
-  credentials: JSON;
+  credenciales: JSON; // Cambiado de 'credentials' a 'credenciales'
 
   @Prop({ default: true })
-  isAvailable: boolean;
+  disponible: boolean; // Cambiado de 'isAvailable' a 'disponible'
 }
 
 export const CarrierSchema = SchemaFactory.createForClass(Carrier);

@@ -13,12 +13,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel('usuarios') private userModel: Model<UserDocument>) {} // Cambiado de User.name a 'usuarios'
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
     // Verificar si el email ya existe
     const existingUser = await this.userModel.findOne({
-      email: createUserDto.email,
+      correo: createUserDto.correo, // Cambiado de 'email' a 'correo'
     });
     if (existingUser) {
       throw new ConflictException('El correo electrónico ya está registrado');
@@ -26,12 +26,12 @@ export class UsersService {
 
     // Hashear la contraseña
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+    const hashedPassword = await bcrypt.hash(createUserDto.contrasena, salt); // Cambiado de 'password' a 'contrasena'
 
     // Crear el nuevo usuario
     const newUser = new this.userModel({
       ...createUserDto,
-      password: hashedPassword,
+      contrasena: hashedPassword, // Cambiado de 'password' a 'contrasena'
     });
 
     return newUser.save();
@@ -55,9 +55,9 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     // Si hay una nueva contraseña, la hasheamos
-    if (updateUserDto.password) {
+    if (updateUserDto.contrasena) { // Cambiado de 'password' a 'contrasena'
       const salt = await bcrypt.genSalt();
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, salt);
+      updateUserDto.contrasena = await bcrypt.hash(updateUserDto.contrasena, salt); // Cambiado de 'password' a 'contrasena'
     }
 
     const updatedUser = await this.userModel

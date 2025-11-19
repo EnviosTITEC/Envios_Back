@@ -14,7 +14,7 @@ import { QuoteResponseDto } from './dto/quote-response.dto';
 @Injectable()
 export class CarriersService {
   constructor(
-    @InjectModel(Carrier.name) private carrierModel: Model<CarrierDocument>,
+    @InjectModel('transportistas') private carrierModel: Model<CarrierDocument>, // Cambiado de Carrier.name a 'transportistas'
     private readonly chilexpress: ChilexpressAdapter,
   ) {}
 

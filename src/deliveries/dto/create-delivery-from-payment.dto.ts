@@ -6,64 +6,64 @@ class CartItemDto {
   @ApiProperty({ example: 'prod_12345', description: 'ID del producto' })
   @IsString()
   @IsNotEmpty()
-  productId: string;
+  id_producto: string; // Cambiado de 'productId'
 
   @ApiProperty({ example: 'iPhone 14 Pro', description: 'Nombre del producto' })
   @IsString()
   @IsNotEmpty()
-  name: string;
+  nombre: string; // Cambiado de 'name'
 
   @ApiProperty({ example: 1, description: 'Cantidad' })
   @IsNumber()
-  quantity: number;
+  cantidad: number; // Cambiado de 'quantity'
 
   @ApiProperty({ example: 899990, description: 'Precio unitario' })
   @IsNumber()
-  price: number;
+  precio: number; // Cambiado de 'price'
 }
 
 class PackageInfoDto {
   @ApiProperty({ example: '5.5', description: 'Peso en kg' })
   @IsNumber()
-  weight: number;
+  peso: number; // Cambiado de 'weight'
 
   @ApiProperty({ example: 45, description: 'Largo en cm' })
   @IsNumber()
-  length: number;
+  largo: number; // Cambiado de 'length'
 
   @ApiProperty({ example: 35, description: 'Ancho en cm' })
   @IsNumber()
-  width: number;
+  ancho: number; // Cambiado de 'width'
 
   @ApiProperty({ example: 25, description: 'Alto en cm' })
   @IsNumber()
-  height: number;
+  alto: number; // Cambiado de 'height'
 }
 
 class ShippingInfoDto {
   @ApiProperty({ example: 'addr_12345', description: 'ID de dirección de origen' })
   @IsString()
   @IsNotEmpty()
-  originAddressId: string;
+  id_direccion_origen: string; // Cambiado de 'originAddressId'
 
   @ApiProperty({ example: 'addr_67890', description: 'ID de dirección de destino' })
   @IsString()
   @IsNotEmpty()
-  destinationAddressId: string;
+  id_direccion_destino: string; // Cambiado de 'destinationAddressId'
 
   @ApiProperty({ example: 'Chilexpress', description: 'Nombre del carrier' })
   @IsString()
   @IsNotEmpty()
-  carrierName: string;
+  nombre_transportista: string; // Cambiado de 'carrierName'
 
   @ApiProperty({ example: 'PRIORITARIO', description: 'Tipo de servicio' })
   @IsString()
   @IsNotEmpty()
-  serviceType: string;
+  tipo_servicio: string; // Cambiado de 'serviceType'
 
   @ApiProperty({ example: 8812, description: 'Costo estimado del envío' })
   @IsNumber()
-  estimatedCost: number;
+  costo_estimado: number; // Cambiado de 'estimatedCost'
 }
 
 /**
@@ -72,47 +72,47 @@ class ShippingInfoDto {
  */
 export class CreateDeliveryFromPaymentDto {
   @ApiProperty({ 
-    example: 'pay_abc123', 
+    example: 'pago_12345', 
     description: 'ID del pago completado' 
   })
   @IsString()
   @IsNotEmpty()
-  paymentId: string;
+  id_pago: string;
 
   @ApiProperty({ 
-    example: 'cart_xyz789', 
-    description: 'ID del carrito' 
+    example: 'carrito_67890', 
+    description: 'ID del carrito de compras' 
   })
   @IsString()
   @IsNotEmpty()
-  cartId: string;
+  id_carrito: string;
 
   @ApiProperty({ 
-    example: 'user_456', 
+    example: 'usuario_123', 
     description: 'ID del usuario comprador' 
   })
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  id_usuario: string;
 
   @ApiProperty({ 
-    example: 'seller_789', 
-    description: 'ID del vendedor' 
+    example: 'vendedor_456', 
+    description: 'ID del vendedor asociado' 
   })
   @IsString()
   @IsNotEmpty()
-  sellerId: string;
+  id_vendedor: string;
 
   @ApiProperty({ 
     example: 950000, 
-    description: 'Monto total del pago' 
+    description: 'Monto total del pago en pesos chilenos' 
   })
   @IsNumber()
-  totalAmount: number;
+  monto_total: number;
 
   @ApiProperty({ 
     type: [CartItemDto],
-    description: 'Items del carrito' 
+    description: 'Lista de productos en el carrito' 
   })
   @IsArray()
   @ValidateNested({ each: true })
@@ -121,35 +121,35 @@ export class CreateDeliveryFromPaymentDto {
 
   @ApiProperty({ 
     type: PackageInfoDto,
-    description: 'Información del paquete' 
+    description: 'Información del paquete a enviar' 
   })
   @ValidateNested()
   @Type(() => PackageInfoDto)
-  package: PackageInfoDto;
+  paquete: PackageInfoDto;
 
   @ApiProperty({ 
     type: ShippingInfoDto,
-    description: 'Información de envío (previamente cotizada)' 
+    description: 'Información del envío previamente cotizado' 
   })
   @ValidateNested()
   @Type(() => ShippingInfoDto)
-  shippingInfo: ShippingInfoDto;
+  info_envio: ShippingInfoDto;
 
   @ApiProperty({ 
     example: 50000, 
-    description: 'Valor declarado para seguro',
+    description: 'Valor declarado del paquete para seguro',
     required: false 
   })
   @IsNumber()
   @IsOptional()
-  declaredWorth?: number;
+  valor_declarado?: number;
 
   @ApiProperty({ 
-    example: 'Envío de compra online - Manejar con cuidado', 
-    description: 'Notas adicionales',
+    example: 'Manejar con cuidado, contiene artículos frágiles', 
+    description: 'Notas adicionales para el envío',
     required: false 
   })
   @IsString()
   @IsOptional()
-  notes?: string;
+  notas?: string;
 }

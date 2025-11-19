@@ -5,7 +5,7 @@ import { DeliveriesController as DeliveriesController } from './deliveries.contr
 import { Delivery, DeliverySchema } from './schemas/delivery.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Delivery.name, schema: DeliverySchema }])],
+  imports: [MongooseModule.forFeature([{ name: 'envios', schema: DeliverySchema }])],
   controllers: [DeliveriesController],
   providers: [DeliveriesService],
 })

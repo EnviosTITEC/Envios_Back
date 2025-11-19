@@ -48,6 +48,15 @@ export class QuoteResponseDto {
   @ApiProperty({
     type: [ServiceOptionDto],
     description: 'Lista de opciones de servicio disponibles',
+    example: [
+      {
+        serviceName: 'PRIORITARIO',
+        serviceCode: 'PRI',
+        serviceValue: 8500,
+        deliveryTime: '1 día hábil',
+        available: true,
+      },
+    ],
   })
   serviceOptions?: ServiceOptionDto[];
 
@@ -77,11 +86,13 @@ export class QuoteResponseDto {
 
   @ApiProperty({
     description: 'Mensaje de error si la cotización falló',
+    example: 'Error al procesar la solicitud',
   })
   error?: string;
 
   @ApiProperty({
     description: 'Datos adicionales de la respuesta de Chilexpress',
+    example: {},
   })
   rawData?: any;
 }

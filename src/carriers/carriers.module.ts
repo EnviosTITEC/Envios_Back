@@ -11,7 +11,7 @@ import { GeoModule } from '../geo/geo.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Carrier.name, schema: CarrierSchema }]),
+    MongooseModule.forFeature([{ name: 'transportistas', schema: CarrierSchema }]), // Cambiado el nombre para cumplir con la nomenclatura
     HttpModule,
     GeoModule,
   ],

@@ -5,37 +5,37 @@ import { Document } from 'mongoose';
 export type AddressDocument = Address & Document;
 
 @Schema({
-  collection: 'addresses',
+  collection: 'direcciones', // Cambiado de 'addresses' a 'direcciones'
   timestamps: true,
   toJSON: { virtuals: true },
 })
 export class Address {
   @Prop({ required: true })
-  street: string;
+  nombre_calle: string; // Cambiado de 'street'
 
   @Prop({ required: true })
-  number: string;
+  numero: string; // Cambiado de 'number'
 
   @Prop({ required: true })
-  communeId: string;
+  id_comuna: string; // Cambiado de 'communeId'
 
   @Prop()
-  countyCode?: string;
+  codigo_comuna?: string; // Cambiado de 'countyCode'
 
   @Prop()
-  province?: string;
+  nombre_provincia?: string; // Cambiado de 'province'
 
   @Prop({ required: true })
-  regionId: string;
+  id_region: string; // Cambiado de 'regionId'
 
   @Prop()
-  postalCode?: string;
+  codigo_postal?: string; // Cambiado de 'postalCode'
 
   @Prop()
-  references?: string;
+  referencias?: string; // Sin cambios, ya que cumple con la nomenclatura
 
   @Prop({ required: true })
-  userId: string;
+  id_usuario: string; // Cambiado de 'userId'
 }
 
 export const AddressSchema = SchemaFactory.createForClass(Address);

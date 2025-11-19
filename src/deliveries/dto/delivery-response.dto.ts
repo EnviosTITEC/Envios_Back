@@ -2,59 +2,59 @@ import { ApiProperty } from '@nestjs/swagger';
 import { DeliveryStatus } from '../schemas/delivery.schema';
 
 export class DeliveryResponseDto {
-  @ApiProperty({ example: 'ENV-1734480000000-A3B7F9', description: 'Número de tracking único' })
-  trackingNumber: string;
+  @ApiProperty({ example: 'ENV-1234567890-ABCDEF', description: 'Número de seguimiento único del envío' })
+  numero_seguimiento: string;
 
-  @ApiProperty({ example: 'Preparando', enum: DeliveryStatus, description: 'Estado actual del envío' })
-  status: DeliveryStatus;
+  @ApiProperty({ example: 'En tránsito', description: 'Estado actual del envío' })
+  estado: DeliveryStatus;
 
-  @ApiProperty({ example: 'pay_abc123', description: 'ID del pago' })
-  paymentId: string;
+  @ApiProperty({ example: 'pago_12345', description: 'ID del pago asociado al envío' })
+  id_pago: string;
 
-  @ApiProperty({ example: 'cart_xyz789', description: 'ID del carrito' })
-  cartId: string;
+  @ApiProperty({ example: 'carrito_67890', description: 'ID del carrito de compras asociado' })
+  id_carrito: string;
 
-  @ApiProperty({ example: 'user_456', description: 'ID del usuario' })
-  userId: string;
+  @ApiProperty({ example: 'usuario_123', description: 'ID del usuario que realizó la compra' })
+  id_usuario: string;
 
-  @ApiProperty({ example: 'seller_789', description: 'ID del vendedor' })
-  sellerId: string;
+  @ApiProperty({ example: 'vendedor_456', description: 'ID del vendedor asociado al envío' })
+  id_vendedor: string;
 
-  @ApiProperty({ example: 'Chilexpress', description: 'Nombre del carrier' })
-  carrierName: string;
+  @ApiProperty({ example: 'Chilexpress', description: 'Nombre del transportista' })
+  nombre_transportista: string;
 
-  @ApiProperty({ example: 'PRIORITARIO', description: 'Tipo de servicio' })
-  serviceType: string;
+  @ApiProperty({ example: 'PRIORITARIO', description: 'Tipo de servicio utilizado para el envío' })
+  tipo_servicio: string;
 
-  @ApiProperty({ example: 8812, description: 'Costo estimado' })
-  estimatedCost: number;
+  @ApiProperty({ example: 8812, description: 'Costo estimado del envío en pesos chilenos' })
+  costo_estimado: number;
 
-  @ApiProperty({ example: 'CLP', description: 'Moneda' })
-  currency: string;
+  @ApiProperty({ example: 'CLP', description: 'Moneda utilizada para el costo estimado' })
+  moneda: string;
 
-  @ApiProperty({ example: 'addr_12345', description: 'ID dirección origen' })
-  originAddressId: string;
+  @ApiProperty({ example: '13101', description: 'ID de la dirección de origen' })
+  id_direccion_origen: string;
 
-  @ApiProperty({ example: 'addr_67890', description: 'ID dirección destino' })
-  destinationAddressId: string;
+  @ApiProperty({ example: '05109', description: 'ID de la dirección de destino' })
+  id_direccion_destino: string;
 
   @ApiProperty({ 
-    example: [{ productId: 'prod_1', name: 'iPhone 14', quantity: 1, price: 899990 }],
-    description: 'Items incluidos en el envío' 
+    example: [{ id_producto: 'prod_1', nombre: 'iPhone 14', cantidad: 1, precio: 899990 }],
+    description: 'Lista de productos incluidos en el envío' 
   })
   items: Array<{
-    productId: string;
-    name: string;
-    quantity: number;
-    price: number;
+    id_producto: string;
+    nombre: string;
+    cantidad: number;
+    precio: number;
   }>;
 
-  @ApiProperty({ example: '2024-12-20T10:00:00Z', description: 'Fecha estimada de entrega' })
-  estimatedDeliveryDate?: Date;
+  @ApiProperty({ example: '2025-11-25T10:00:00Z', description: 'Fecha estimada de entrega del envío' })
+  fecha_entrega_estimada?: Date;
 
-  @ApiProperty({ example: '2024-12-17T15:30:00Z', description: 'Fecha de creación' })
-  createdAt: Date;
+  @ApiProperty({ example: '2025-11-19T15:30:00Z', description: 'Fecha de creación del envío' })
+  fecha_creacion: Date;
 
-  @ApiProperty({ example: 'Envío creado exitosamente. El vendedor ha sido notificado.', description: 'Mensaje informativo' })
+  @ApiProperty({ example: 'Envío creado exitosamente.', description: 'Mensaje informativo sobre el estado del envío' })
   message: string;
 }
