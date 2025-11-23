@@ -165,10 +165,10 @@ private generateTrackingNumber(): string {
 
 ### 2. Validaciones
 
-- ✅ No permitir duplicados por `paymentId`
-- ✅ Tracking number único (retry hasta 10 intentos)
-- ✅ Validación de DTOs con class-validator
-- ✅ Stock validado previamente (asumido por pago completado)
+-  No permitir duplicados por `paymentId`
+-  Tracking number único (retry hasta 10 intentos)
+-  Validación de DTOs con class-validator
+-  Stock validado previamente (asumido por pago completado)
 
 ### 3. Cálculo de Fecha Estimada
 

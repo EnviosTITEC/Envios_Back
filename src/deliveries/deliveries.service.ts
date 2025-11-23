@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Delivery, DeliveryStatus } from './schemas/delivery.schema';
 import { DeliveryDto } from '../contracts/delivery.dto';
 import { CreateDeliveryFromPaymentDto } from './dto/create-delivery-from-payment.dto';
+import { CreateDeliveryDirectlyDto } from './dto/create-delivery-directly.dto';
 import { DeliveryResponseDto } from './dto/delivery-response.dto';
 
 const ERROR_MSG = "Delivery not found."
@@ -147,5 +148,102 @@ export class DeliveriesService {
 
   async remove(id: string) {
     return this.deliveryModel.findByIdAndDelete(id).exec();
+  }
+
+  /**
+   * Crea un envío directamente desde el frontend (sin pago)
+   * Para el flujo de cotización
+   */
+  async createDirectly(dto: CreateDeliveryDirectlyDto): Promise<DeliveryResponseDto> {
+    this.logger.log(`Creating delivery directly for user: ${dto.userId}`);
+
+    // Generar tracking number único
+    let trackingNumber = this.generateTrackingNumber();
+    let attempts = 0;
+    while (await this.deliveryModel.findOne({ trackingNumber })) {
+      trackingNumber = this.generateTrackingNumber();
+      attempts++;
+      if (attempts > 10) {
+        throw new BadRequestException('Unable to generate unique tracking number');
+      }
+    }
+
+    // Calcular fecha estimada de entrega
+    const estimatedDeliveryDate = this.calculateEstimatedDelivery(dto.shippingInfo.serviceType);
+
+    // Crear el envío
+    const delivery = new this.deliveryModel({
+      trackingNumber,
+      status: DeliveryStatus.PREPARANDO,
+      cartId: dto.cartId || `cart-${Date.now()}`,
+      userId: dto.userId,
+      sellerId: dto.sellerId,
+      carrierId: dto.shippingInfo.carrierName.toLowerCase(),
+      carrierName: dto.shippingInfo.carrierName,
+      serviceType: dto.shippingInfo.serviceType,
+      estimatedCost: dto.shippingInfo.estimatedCost,
+      currency: 'CLP',
+      originAddressId: dto.shippingInfo.originAddressId,
+      destinationAddressId: dto.shippingInfo.destinationAddressId,
+      weight: dto.package.weight,
+      dimensions: {
+        length: dto.package.length,
+        width: dto.package.width,
+        height: dto.package.height,
+      },
+      declaredWorth: dto.declaredWorth || 0,
+      fragile: false,
+      items: dto.items,
+      estimatedDeliveryDate,
+      notes: dto.notes || '',
+    });
+
+    const saved = await delivery.save();
+    this.logger.log(`Delivery created successfully: ${trackingNumber}`);
+
+    return {
+      trackingNumber: saved.trackingNumber,
+      status: saved.status,
+      paymentId: saved.paymentId,
+      cartId: saved.cartId,
+      userId: saved.userId,
+      sellerId: saved.sellerId,
+      carrierName: saved.carrierName,
+      serviceType: saved.serviceType,
+      estimatedCost: saved.estimatedCost,
+      currency: saved.currency,
+      originAddressId: saved.originAddressId,
+      destinationAddressId: saved.destinationAddressId,
+      items: saved.items,
+      estimatedDeliveryDate: saved.estimatedDeliveryDate,
+      createdAt: new Date(),
+      message: 'Envío creado exitosamente.',
+    };
+  }
+
+  /**
+   * Lista todos los envíos de un usuario específico
+   */
+  async findByUserId(userId: string) {
+    this.logger.log(`Fetching deliveries for user: ${userId}`);
+    const deliveries = await this.deliveryModel.find({ userId }).sort({ createdAt: -1 }).exec();
+    if (!deliveries || deliveries.length === 0) {
+      this.logger.warn(`No deliveries found for user: ${userId}`);
+      return [];
+    }
+    return deliveries;
+  }
+
+  /**
+   * Busca un envío por su número de tracking
+   */
+  async findByTrackingNumber(trackingNumber: string) {
+    this.logger.log(`Fetching delivery by tracking number: ${trackingNumber}`);
+    const delivery = await this.deliveryModel.findOne({ trackingNumber }).exec();
+    if (!delivery) {
+      this.logger.warn(`Delivery not found for tracking number: ${trackingNumber}`);
+      throw new NotFoundException(`Envío con número de seguimiento "${trackingNumber}" no encontrado.`);
+    }
+    return delivery;
   }
 }

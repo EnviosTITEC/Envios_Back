@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { DeliveriesService as DeliveriesService } from './deliveries.service';
 import { DeliveryDto } from '../contracts/delivery.dto';
 import { CreateDeliveryFromPaymentDto } from './dto/create-delivery-from-payment.dto';
+import { CreateDeliveryDirectlyDto } from './dto/create-delivery-directly.dto';
 import { DeliveryResponseDto } from './dto/delivery-response.dto';
 
 @ApiTags('deliveries')
@@ -93,6 +94,98 @@ export class DeliveriesController {
   @ApiResponse({ status: 500, description: 'Error al crear el envío' })
   async createFromPayment(@Body() dto: CreateDeliveryFromPaymentDto): Promise<DeliveryResponseDto> {
     return this.deliveryService.createFromPayment(dto);
+  }
+
+  /**
+   * Crear envío directamente desde el frontend (para flujo de cotización)
+   */
+  @Post('create')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ 
+    summary: 'Crear envío directamente',
+    description: 'Crea un envío desde el frontend sin necesidad de un pago previo. Usado en el flujo de cotización.'
+  })
+  @ApiBody({
+    type: CreateDeliveryDirectlyDto,
+    description: 'Datos del envío',
+    examples: {
+      example1: {
+        summary: 'Ejemplo de creación directa',
+        value: {
+          userId: 'user_456',
+          sellerId: 'seller_789',
+          cartId: 'cart_xyz789',
+          items: [
+            {
+              productId: 'prod_12345',
+              name: 'iPhone 14 Pro 256GB',
+              quantity: 1,
+              price: 899990
+            }
+          ],
+          package: {
+            weight: 0.5,
+            length: 20,
+            width: 15,
+            height: 10
+          },
+          shippingInfo: {
+            originAddressId: 'addr_origin_123',
+            destinationAddressId: 'addr_dest_456',
+            carrierName: 'Chilexpress',
+            serviceType: 'PRIORITARIO',
+            estimatedCost: 8812
+          },
+          declaredWorth: 50000,
+          notes: 'Entregar en horario de oficina'
+        }
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'Envío creado exitosamente',
+    type: DeliveryResponseDto
+  })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  async createDirectly(@Body() dto: CreateDeliveryDirectlyDto): Promise<DeliveryResponseDto> {
+    return this.deliveryService.createDirectly(dto);
+  }
+
+  /**
+   * Listar envíos de un usuario específico
+   */
+  @Get('user/:userId')
+  @ApiOperation({ 
+    summary: 'Listar envíos del usuario',
+    description: 'Obtiene todos los envíos asociados a un usuario específico, ordenados por fecha de creación descendente.'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Lista de envíos del usuario',
+    type: [DeliveryResponseDto]
+  })
+  @ApiResponse({ status: 404, description: 'Usuario sin envíos' })
+  async findByUserId(@Param('userId') userId: string) {
+    return this.deliveryService.findByUserId(userId);
+  }
+
+  /**
+   * Buscar envío por número de tracking
+   */
+  @Get('tracking/:trackingNumber')
+  @ApiOperation({ 
+    summary: 'Buscar envío por número de tracking',
+    description: 'Obtiene los detalles completos de un envío usando su número de seguimiento (tracking number).'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Envío encontrado',
+    type: DeliveryResponseDto
+  })
+  @ApiResponse({ status: 404, description: 'Envío no encontrado con ese número de tracking' })
+  async findByTrackingNumber(@Param('trackingNumber') trackingNumber: string) {
+    return this.deliveryService.findByTrackingNumber(trackingNumber);
   }
 
 

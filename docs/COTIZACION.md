@@ -1,4 +1,4 @@
-# 📦 Sistema de Cotización de Envíos
+#  Sistema de Cotización de Envíos
 
 ## Historia de Usuario
 
