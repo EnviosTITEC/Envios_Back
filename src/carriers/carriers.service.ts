@@ -47,24 +47,10 @@ export class CarriersService {
     return { deleted: true };
   }
 
-  async quote(dto: SolicitudCotizacionDto): Promise<RespuestaCotizacionDto> {
-    const originCountyCode = dto.codigo_cobertura_origen || dto.comuna_origen_id;
-    const destinationCountyCode = dto.codigo_cobertura_destino || dto.comuna_destino_id;
-
-    return this.chilexpress.getQuote({
-      originCountyCode,
-      destinationCountyCode,
-      package: {
-        weight: dto.paquete.peso,
-        height: dto.paquete.alto,
-        width: dto.paquete.ancho,
-        length: dto.paquete.largo,
-      },
-      productType: dto.tipo_producto,
-      contentType: dto.tipo_contenido,
-      declaredWorth: dto.valor_declarado,
-      deliveryTime: dto.tiempo_entrega,
-    });
+  async quote(dto: any): Promise<any> {
+    // Delegate mapping to the Chilexpress adapter which accepts either
+    // the Chilexpress-shaped payload or the internal Spanish DTO (paquete, tipo_producto, etc.).
+    return this.chilexpress.getQuote(dto);
   }
 
   async listCoverages() {

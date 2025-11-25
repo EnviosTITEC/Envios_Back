@@ -20,7 +20,7 @@ export class CarriersController {
       'Para obtener los códigos correctos, usar primero GET /geo/chilexpress/regions y luego GET /geo/chilexpress/coverage-areas',
   })
   @ApiBody({
-    type: SolicitudCotizacionDto,
+    type: Object,
     examples: {
       'Usando countyCode': {
         value: {
@@ -44,7 +44,7 @@ export class CarriersController {
     type: RespuestaCotizacionDto,
     description: 'Cotización exitosa con opciones de servicio',
   })
-  async quote(@Body() dto: SolicitudCotizacionDto): Promise<RespuestaCotizacionDto> {
+  async quote(@Body() dto: any): Promise<any> {
     return this.carriersService.quote(dto);
   }
 
