@@ -1,15 +1,15 @@
 //src/addresses/addresses.controller.ts
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { AddressesService } from './addresses.service';
-import { CreateAddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
+import { CrearDireccionDto } from './dto/create-address.dto';
+import { ActualizarDireccionDto } from './dto/update-address.dto';
 
 @Controller('addresses')
 export class AddressesController {
   constructor(private readonly addressService: AddressesService) {}
 
   @Post()
-  create(@Body() dto: CreateAddressDto) {
+  create(@Body() dto: CrearDireccionDto) {
     return this.addressService.create(dto);
   }
 
@@ -24,7 +24,7 @@ export class AddressesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateAddressDto) {
+  update(@Param('id') id: string, @Body() dto: ActualizarDireccionDto) {
     return this.addressService.update(id, dto);
   }
 

@@ -1,18 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsOptional } from 'class-validator';
 
-export class CreateAddressDto {
+export class CrearDireccionDto {
   @ApiProperty()
   @IsString()
-  street: string;
+  calle: string;
 
   @ApiProperty()
   @IsString()
-  number: string;
+  numero: string;
 
   @ApiProperty()
   @IsString()
-  communeId: string;
+  comuna_id: string;
 
   @ApiProperty({
     required: false,
@@ -20,30 +20,30 @@ export class CreateAddressDto {
   })
   @IsOptional()
   @IsString()
-  countyCode?: string;
+  codigo_comuna?: string;
 
   @ApiProperty({
     required: false,
   })
   @IsOptional()
   @IsString()
-  province?: string;
+  provincia?: string;
 
   @ApiProperty()
   @IsString()
-  regionId: string;
+  region_id: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
-  postalCode?: string;
+  codigo_postal?: string;
 
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
-  references?: string;
+  referencias?: string;
 
   @ApiProperty()
   @IsString()
-  userId: string;
+  usuario_id: string;
 }

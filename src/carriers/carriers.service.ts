@@ -6,10 +6,10 @@ import { Model } from 'mongoose';
 import { Carrier, CarrierDocument } from './schemas/carrier.schema';
 import { ChilexpressAdapter } from './adapters/chilexpress-adapters';
 
-import { CreateCarrierDto } from './dto/create-carrier.dto';
-import { UpdateCarrierDto } from './dto/update-carrier.dto';
-import { QuoteRequestDto } from './dto/quote-request.dto';
-import { QuoteResponseDto } from './dto/quote-response.dto';
+import { CrearTransportistaDto } from './dto/create-carrier.dto';
+import { ActualizarTransportistaDto } from './dto/update-carrier.dto';
+import { SolicitudCotizacionDto } from './dto/quote-request.dto';
+import { RespuestaCotizacionDto } from './dto/quote-response.dto';
 
 @Injectable()
 export class CarriersService {
@@ -18,7 +18,7 @@ export class CarriersService {
     private readonly chilexpress: ChilexpressAdapter,
   ) {}
 
-  async create(dto: CreateCarrierDto) {
+  async create(dto: CrearTransportistaDto) {
     return new this.carrierModel(dto).save();
   }
 
@@ -32,7 +32,7 @@ export class CarriersService {
     return carrier;
   }
 
-  async update(id: string, dto: UpdateCarrierDto) {
+  async update(id: string, dto: ActualizarTransportistaDto) {
     const updated = await this.carrierModel
       .findByIdAndUpdate(id, dto, { new: true })
       .exec();
@@ -47,15 +47,23 @@ export class CarriersService {
     return { deleted: true };
   }
 
-  async quote(dto: any) {
+  async quote(dto: SolicitudCotizacionDto): Promise<RespuestaCotizacionDto> {
+    const originCountyCode = dto.codigo_cobertura_origen || dto.comuna_origen_id;
+    const destinationCountyCode = dto.codigo_cobertura_destino || dto.comuna_destino_id;
+
     return this.chilexpress.getQuote({
-      originCountyCode: dto.originCountyCode,
-      destinationCountyCode: dto.destinationCountyCode,
-      package: dto.package,
-      productType: dto.productType,
-      contentType: dto.contentType,
-      declaredWorth: dto.declaredWorth,
-      deliveryTime: dto.deliveryTime,
+      originCountyCode,
+      destinationCountyCode,
+      package: {
+        weight: dto.paquete.peso,
+        height: dto.paquete.alto,
+        width: dto.paquete.ancho,
+        length: dto.paquete.largo,
+      },
+      productType: dto.tipo_producto,
+      contentType: dto.tipo_contenido,
+      declaredWorth: dto.valor_declarado,
+      deliveryTime: dto.tiempo_entrega,
     });
   }
 

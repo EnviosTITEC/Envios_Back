@@ -1,12 +1,12 @@
 import { IsNotEmpty, IsString, IsBoolean, IsJSON } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateCarrierDto {
+export class CrearTransportistaDto {
 
   @ApiProperty({ required: true, example: "DHL" })
   @IsString()
   @IsNotEmpty()
-  name: string;
+  nombre: string;
 
   @ApiProperty({ 
     required: true,
@@ -14,10 +14,10 @@ export class CreateCarrierDto {
   })
   @IsJSON()
   @IsNotEmpty()
-  credentials: JSON;
+  credenciales: JSON;
 
   @ApiProperty({ required: true, example: true })
   @IsBoolean()
-  isActive: boolean;
+  disponible: boolean;
 
 }

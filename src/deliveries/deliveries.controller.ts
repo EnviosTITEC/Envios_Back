@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpCode,
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { DeliveriesService as DeliveriesService } from './deliveries.service';
 import { DeliveryDto } from '../contracts/delivery.dto';
-import { CreateDeliveryFromPaymentDto } from './dto/create-delivery-from-payment.dto';
-import { CreateDeliveryDirectlyDto } from './dto/create-delivery-directly.dto';
-import { DeliveryResponseDto } from './dto/delivery-response.dto';
+import { CrearEnvioDesdePagoDto } from './dto/create-delivery-from-payment.dto';
+import { CrearEnvioDirectoDto } from './dto/create-delivery-directly.dto';
+import { RespuestaEnvioDto } from './dto/delivery-response.dto';
 
 @ApiTags('deliveries')
 @Controller('deliveries')
@@ -22,7 +22,7 @@ export class DeliveriesController {
     description: 'Endpoint llamado automáticamente por el microservicio de Pagos cuando un pago se completa. Crea el envío con estado "Preparando" y genera el tracking number.'
   })
   @ApiBody({
-    type: CreateDeliveryFromPaymentDto,
+    type: CrearEnvioDesdePagoDto,
     description: 'Datos del pago y envío',
     examples: {
       example1: {
@@ -63,7 +63,7 @@ export class DeliveriesController {
   @ApiResponse({ 
     status: 201, 
     description: 'Envío creado exitosamente',
-    type: DeliveryResponseDto,
+    type: RespuestaEnvioDto,
     example: {
       trackingNumber: 'ENV-1734480000000-A3B7F9',
       status: 'Preparando',
@@ -92,7 +92,7 @@ export class DeliveriesController {
   })
   @ApiResponse({ status: 400, description: 'Datos inválidos o envío ya existe para este pago' })
   @ApiResponse({ status: 500, description: 'Error al crear el envío' })
-  async createFromPayment(@Body() dto: CreateDeliveryFromPaymentDto): Promise<DeliveryResponseDto> {
+  async createFromPayment(@Body() dto: CrearEnvioDesdePagoDto): Promise<RespuestaEnvioDto> {
     return this.deliveryService.createFromPayment(dto);
   }
 
@@ -106,7 +106,7 @@ export class DeliveriesController {
     description: 'Crea un envío desde el frontend sin necesidad de un pago previo. Usado en el flujo de cotización.'
   })
   @ApiBody({
-    type: CreateDeliveryDirectlyDto,
+    type: CrearEnvioDirectoDto,
     description: 'Datos del envío',
     examples: {
       example1: {
@@ -145,10 +145,10 @@ export class DeliveriesController {
   @ApiResponse({ 
     status: 201, 
     description: 'Envío creado exitosamente',
-    type: DeliveryResponseDto
+    type: RespuestaEnvioDto
   })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  async createDirectly(@Body() dto: CreateDeliveryDirectlyDto): Promise<DeliveryResponseDto> {
+  async createDirectly(@Body() dto: CrearEnvioDirectoDto): Promise<RespuestaEnvioDto> {
     return this.deliveryService.createDirectly(dto);
   }
 
@@ -163,7 +163,7 @@ export class DeliveriesController {
   @ApiResponse({ 
     status: 200, 
     description: 'Lista de envíos del usuario',
-    type: [DeliveryResponseDto]
+    type: [RespuestaEnvioDto]
   })
   @ApiResponse({ status: 404, description: 'Usuario sin envíos' })
   async findByUserId(@Param('userId') userId: string) {
@@ -181,7 +181,7 @@ export class DeliveriesController {
   @ApiResponse({ 
     status: 200, 
     description: 'Envío encontrado',
-    type: DeliveryResponseDto
+    type: RespuestaEnvioDto
   })
   @ApiResponse({ status: 404, description: 'Envío no encontrado con ese número de tracking' })
   async findByTrackingNumber(@Param('trackingNumber') trackingNumber: string) {

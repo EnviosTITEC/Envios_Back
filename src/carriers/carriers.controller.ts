@@ -2,10 +2,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CarriersService } from './carriers.service';
-import { CreateCarrierDto } from './dto/create-carrier.dto';
-import { UpdateCarrierDto } from './dto/update-carrier.dto';
-import { QuoteRequestDto } from './dto/quote-request.dto';
-import { QuoteResponseDto } from './dto/quote-response.dto';
+import { CrearTransportistaDto } from './dto/create-carrier.dto';
+import { ActualizarTransportistaDto } from './dto/update-carrier.dto';
+import { SolicitudCotizacionDto } from './dto/quote-request.dto';
+import { RespuestaCotizacionDto } from './dto/quote-response.dto';
 
 @ApiTags('Carriers')
 @Controller("carriers")
@@ -20,7 +20,7 @@ export class CarriersController {
       'Para obtener los códigos correctos, usar primero GET /geo/chilexpress/regions y luego GET /geo/chilexpress/coverage-areas',
   })
   @ApiBody({
-    type: QuoteRequestDto,
+    type: SolicitudCotizacionDto,
     examples: {
       'Usando countyCode': {
         value: {
@@ -41,10 +41,10 @@ export class CarriersController {
     },
   })
   @ApiOkResponse({
-    type: QuoteResponseDto,
+    type: RespuestaCotizacionDto,
     description: 'Cotización exitosa con opciones de servicio',
   })
-  async quote(@Body() dto: QuoteRequestDto): Promise<QuoteResponseDto> {
+  async quote(@Body() dto: SolicitudCotizacionDto): Promise<RespuestaCotizacionDto> {
     return this.carriersService.quote(dto);
   }
 
@@ -52,7 +52,7 @@ export class CarriersController {
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo carrier' })
-  create(@Body() dto: CreateCarrierDto) {
+  create(@Body() dto: CrearTransportistaDto) {
     return this.carriersService.create(dto);
   }
 
@@ -70,7 +70,7 @@ export class CarriersController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Actualizar carrier' })
-  update(@Param('id') id: string, @Body() dto: UpdateCarrierDto) {
+  update(@Param('id') id: string, @Body() dto: ActualizarTransportistaDto) {
     return this.carriersService.update(id, dto);
   }
 
