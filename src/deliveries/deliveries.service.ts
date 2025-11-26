@@ -105,6 +105,7 @@ export class DeliveriesService {
 
     return {
       numero_seguimiento: saved.numero_seguimiento,
+      trackingNumber: saved.numero_seguimiento,
       estado: saved.estado,
       pago_id: saved.pago_id,
       carrito_id: saved.carrito_id,
@@ -140,8 +141,9 @@ export class DeliveriesService {
     return delivery
   }
 
-  async update(id: string, dto: DeliveryDto) {
-    const updated = await this.deliveryModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+  async update(id: string, dto: any) {
+    // Allow partial updates (e.g., only `estado`). Use runValidators to validate provided fields.
+    const updated = await this.deliveryModel.findByIdAndUpdate(id, dto, { new: true, runValidators: true }).exec();
     if (!updated) throw new NotFoundException(ERROR_MSG);
     return updated;
   }
@@ -160,7 +162,7 @@ export class DeliveriesService {
     // Generar tracking number único
     let trackingNumber = this.generateTrackingNumber();
     let attempts = 0;
-    while (await this.deliveryModel.findOne({ trackingNumber })) {
+    while (await this.deliveryModel.findOne({ numero_seguimiento: trackingNumber })) {
       trackingNumber = this.generateTrackingNumber();
       attempts++;
       if (attempts > 10) {
@@ -203,6 +205,7 @@ export class DeliveriesService {
 
     return {
       numero_seguimiento: saved.numero_seguimiento,
+      trackingNumber: saved.numero_seguimiento,
       estado: saved.estado,
       pago_id: saved.pago_id,
       carrito_id: saved.carrito_id,
@@ -225,10 +228,8 @@ export class DeliveriesService {
    * Lista todos los envíos de un usuario específico
    */
   async findByUserId(userId: string) {
-    this.logger.log(`Fetching deliveries for user: ${userId}`);
     const deliveries = await this.deliveryModel.find({ usuario_id: userId }).sort({ creado_en: -1 }).exec();
     if (!deliveries || deliveries.length === 0) {
-      this.logger.warn(`No deliveries found for user: ${userId}`);
       return [];
     }
     return deliveries;
@@ -241,9 +242,23 @@ export class DeliveriesService {
     this.logger.log(`Fetching delivery by tracking number: ${trackingNumber}`);
     const delivery = await this.deliveryModel.findOne({ numero_seguimiento: trackingNumber }).exec();
     if (!delivery) {
-      this.logger.warn(`Delivery not found for tracking number: ${trackingNumber}`);
       throw new NotFoundException(`Envío con número de seguimiento "${trackingNumber}" no encontrado.`);
     }
     return delivery;
+  }
+
+  /**
+   * Actualiza un envío buscándolo por `numero_seguimiento`.
+   * Permite actualizaciones parciales y ejecuta validaciones de esquema.
+   */
+  async updateByTrackingNumber(trackingNumber: string, dto: any) {
+    this.logger.log(`Updating delivery by tracking number: ${trackingNumber}`);
+    const updated = await this.deliveryModel.findOneAndUpdate(
+      { numero_seguimiento: trackingNumber },
+      dto,
+      { new: true, runValidators: true }
+    ).exec();
+    if (!updated) throw new NotFoundException(`Envío con número de seguimiento "${trackingNumber}" no encontrado.`);
+    return updated;
   }
 }

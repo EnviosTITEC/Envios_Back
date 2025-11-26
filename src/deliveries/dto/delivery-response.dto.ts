@@ -5,6 +5,9 @@ export class RespuestaEnvioDto {
   @ApiProperty({ example: 'ENV-1734480000000-A3B7F9', description: 'Número de tracking único' })
   numero_seguimiento: string;
 
+  @ApiProperty({ example: 'ENV-1734480000000-A3B7F9', description: 'Número de tracking (alias en camelCase)' })
+  trackingNumber?: string;
+
   @ApiProperty({ example: 'Preparando', enum: DeliveryStatus, description: 'Estado actual del envío' })
   estado: DeliveryStatus;
 

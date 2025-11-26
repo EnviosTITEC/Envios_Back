@@ -34,7 +34,8 @@ export class Delivery {
   estado: DeliveryStatus;
 
   // Referencias a otros microservicios
-  @Prop({ required: true, index: true })
+  // `pago_id` puede estar ausente cuando se crea un envío directamente desde el frontend
+  @Prop({ required: false, index: true })
   pago_id: string;
 
   @Prop({ required: true, index: true })

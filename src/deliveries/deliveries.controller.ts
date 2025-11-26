@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpCode,
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { DeliveriesService as DeliveriesService } from './deliveries.service';
 import { DeliveryDto } from '../contracts/delivery.dto';
+import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 import { CrearEnvioDesdePagoDto } from './dto/create-delivery-from-payment.dto';
 import { CrearEnvioDirectoDto } from './dto/create-delivery-directly.dto';
 import { RespuestaEnvioDto } from './dto/delivery-response.dto';
@@ -188,6 +189,18 @@ export class DeliveriesController {
     return this.deliveryService.findByTrackingNumber(trackingNumber);
   }
 
+  /**
+   * Actualizar envío por número de tracking
+   * Ej: PATCH /deliveries/tracking/ENV-123456789
+   */
+  @Patch('tracking/:trackingNumber')
+  @ApiOperation({ summary: 'Actualizar envío por número de tracking' })
+  @ApiResponse({ status: 200, description: 'Envío actualizado' })
+  @ApiResponse({ status: 404, description: 'Envío no encontrado' })
+  updateByTracking(@Param('trackingNumber') trackingNumber: string, @Body() dto: UpdateDeliveryDto) {
+    return this.deliveryService.updateByTrackingNumber(trackingNumber, dto);
+  }
+
 
   @Get()
   @ApiOperation({ summary: 'Listar todos los envíos' })
@@ -208,7 +221,7 @@ export class DeliveriesController {
   @ApiOperation({ summary: 'Actualizar envío' })
   @ApiResponse({ status: 200, description: 'Envío actualizado' })
   @ApiResponse({ status: 404, description: 'Envío no encontrado' })
-  update(@Param('id') id: string, @Body() dto: DeliveryDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateDeliveryDto) {
     return this.deliveryService.update(id, dto);
   }
 
