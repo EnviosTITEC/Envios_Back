@@ -1,79 +1,79 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ServiceOptionDto {
+export class OpcionServicioDto {
   @ApiProperty({
     example: 'PRIORITARIO',
     description: 'Nombre del servicio de envío',
   })
-  serviceName?: string;
+  nombre_servicio?: string;
 
   @ApiProperty({
     example: 'PRI',
     description: 'Código del servicio',
   })
-  serviceCode?: string;
+  codigo_servicio?: string;
 
   @ApiProperty({
     example: 8500,
     description: 'Costo del servicio en pesos chilenos',
   })
-  serviceValue?: number;
+  valor_servicio?: number;
 
   @ApiProperty({
     example: '1 día hábil',
     description: 'Tiempo estimado de entrega',
   })
-  deliveryTime?: string;
+  tiempo_entrega?: string;
 
   @ApiProperty({
     example: true,
     description: 'Indica si el servicio está disponible',
   })
-  available?: boolean;
+  disponible?: boolean;
 }
 
-export class QuoteResponseDto {
+export class RespuestaCotizacionDto {
   @ApiProperty({
     example: 0,
     description: 'Código de estado de la respuesta (0 = éxito)',
   })
-  statusCode: number;
+  codigo_estado: number;
 
   @ApiProperty({
     example: 'Cotización exitosa',
     description: 'Descripción del estado',
   })
-  statusDescription: string;
+  descripcion_estado: string;
 
   @ApiProperty({
-    type: [ServiceOptionDto],
+    type: [OpcionServicioDto],
     description: 'Lista de opciones de servicio disponibles',
   })
-  serviceOptions?: ServiceOptionDto[];
+  opciones_servicio?: OpcionServicioDto[];
 
   @ApiProperty({
     example: '13101',
     description: 'Código de comuna de origen utilizado',
   })
-  originCommuneId?: string;
+  comuna_origen_id?: string;
 
   @ApiProperty({
     example: '05109',
     description: 'Código de comuna de destino utilizado',
   })
-  destinationCommuneId?: string;
+  comuna_destino_id?: string;
 
   @ApiProperty({
     example: 'SCL',
     description: 'Código de cobertura Chilexpress de origen',
   })
-  originCountyCode?: string;
+  codigo_cobertura_origen?: string;
 
   @ApiProperty({
     example: 'VAP',
     description: 'Código de cobertura Chilexpress de destino',
   })
-  destinationCountyCode?: string;
+  codigo_cobertura_destino?: string;
 
   @ApiProperty({
     description: 'Mensaje de error si la cotización falló',
@@ -83,5 +83,5 @@ export class QuoteResponseDto {
   @ApiProperty({
     description: 'Datos adicionales de la respuesta de Chilexpress',
   })
-  rawData?: any;
+  datos_crudos?: any;
 }

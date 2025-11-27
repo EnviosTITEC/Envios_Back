@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { City } from './schemas/city.schema';
-import { CreateCityDto } from './dto/create-city.dto';
-import { UpdateCityDto } from './dto/update-city.dto';
+import { CrearCiudadDto } from './dto/create-city.dto';
+import { ActualizarCiudadDto } from './dto/update-city.dto';
 
 @Injectable()
 export class CitiesService {
@@ -11,7 +11,7 @@ export class CitiesService {
     @InjectModel(City.name) private cityModel: Model<City>,
   ) {}
 
-  create(dto: CreateCityDto) {
+  create(dto: CrearCiudadDto) {
     const created = new this.cityModel(dto);
     return created.save();
   }
@@ -24,7 +24,7 @@ export class CitiesService {
     return this.cityModel.findById(id).exec();
   }
 
-  update(id: string, updateCityDto: UpdateCityDto) {
+  update(id: string, updateCityDto: ActualizarCiudadDto) {
     return this.cityModel.findByIdAndUpdate(id, updateCityDto, { new: true }).exec();
   }
 

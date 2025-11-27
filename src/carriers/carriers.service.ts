@@ -6,10 +6,10 @@ import { Model } from 'mongoose';
 import { Carrier, CarrierDocument } from './schemas/carrier.schema';
 import { ChilexpressAdapter } from './adapters/chilexpress-adapters';
 
-import { CreateCarrierDto } from './dto/create-carrier.dto';
-import { UpdateCarrierDto } from './dto/update-carrier.dto';
-import { QuoteRequestDto } from './dto/quote-request.dto';
-import { QuoteResponseDto } from './dto/quote-response.dto';
+import { CrearTransportistaDto } from './dto/create-carrier.dto';
+import { ActualizarTransportistaDto } from './dto/update-carrier.dto';
+import { SolicitudCotizacionDto } from './dto/quote-request.dto';
+import { RespuestaCotizacionDto } from './dto/quote-response.dto';
 
 @Injectable()
 export class CarriersService {
@@ -18,7 +18,7 @@ export class CarriersService {
     private readonly chilexpress: ChilexpressAdapter,
   ) {}
 
-  async create(dto: CreateCarrierDto) {
+  async create(dto: CrearTransportistaDto) {
     return new this.carrierModel(dto).save();
   }
 
@@ -32,7 +32,7 @@ export class CarriersService {
     return carrier;
   }
 
-  async update(id: string, dto: UpdateCarrierDto) {
+  async update(id: string, dto: ActualizarTransportistaDto) {
     const updated = await this.carrierModel
       .findByIdAndUpdate(id, dto, { new: true })
       .exec();
@@ -47,16 +47,10 @@ export class CarriersService {
     return { deleted: true };
   }
 
-  async quote(dto: any) {
-    return this.chilexpress.getQuote({
-      originCountyCode: dto.originCountyCode,
-      destinationCountyCode: dto.destinationCountyCode,
-      package: dto.package,
-      productType: dto.productType,
-      contentType: dto.contentType,
-      declaredWorth: dto.declaredWorth,
-      deliveryTime: dto.deliveryTime,
-    });
+  async quote(dto: any): Promise<any> {
+    // Delegate mapping to the Chilexpress adapter which accepts either
+    // the Chilexpress-shaped payload or the internal Spanish DTO (paquete, tipo_producto, etc.).
+    return this.chilexpress.getQuote(dto);
   }
 
   async listCoverages() {

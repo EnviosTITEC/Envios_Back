@@ -8,17 +8,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { User, UserDocument } from './schemas/user.schema';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CrearUsuarioDto } from './dto/create-user.dto';
+import { ActualizarUsuarioDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserDocument> {
-    // Verificar si el email ya existe
+  async create(createUserDto: CrearUsuarioDto): Promise<UserDocument> {
+    // Verificar si el correo ya existe
     const existingUser = await this.userModel.findOne({
-      email: createUserDto.email,
+      correo: createUserDto.correo,
     });
     if (existingUser) {
       throw new ConflictException('El correo electrónico ya está registrado');
@@ -26,23 +26,25 @@ export class UsersService {
 
     // Hashear la contraseña
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+    const hashedPassword = await bcrypt.hash(createUserDto.contrasena, salt);
 
     // Crear el nuevo usuario
     const newUser = new this.userModel({
-      ...createUserDto,
-      password: hashedPassword,
+      nombre: createUserDto.nombre,
+      apellido: createUserDto.apellido,
+      correo: createUserDto.correo,
+      contrasena: hashedPassword,
     });
 
     return newUser.save();
   }
 
   async findAll(): Promise<User[]> {
-    return this.userModel.find().select('-password').exec();
+    return this.userModel.find().select('-contrasena').exec();
   }
 
   async findOne(id: string): Promise<User> {
-    const user = await this.userModel.findById(id).select('-password').exec();
+    const user = await this.userModel.findById(id).select('-contrasena').exec();
     if (!user) {
       throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
     }
@@ -50,19 +52,19 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<UserDocument> {
-    return this.userModel.findOne({ email }).exec();
+    return this.userModel.findOne({ correo: email }).exec();
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: string, updateUserDto: ActualizarUsuarioDto): Promise<User> {
     // Si hay una nueva contraseña, la hasheamos
-    if (updateUserDto.password) {
+    if ((updateUserDto as any).contrasena) {
       const salt = await bcrypt.genSalt();
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, salt);
+      (updateUserDto as any).contrasena = await bcrypt.hash((updateUserDto as any).contrasena, salt);
     }
 
     const updatedUser = await this.userModel
-      .findByIdAndUpdate(id, updateUserDto, { new: true })
-      .select('-password')
+      .findByIdAndUpdate(id, updateUserDto as any, { new: true })
+      .select('-contrasena')
       .exec();
 
     if (!updatedUser) {

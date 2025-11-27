@@ -10,85 +10,85 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class PackageInfoDto {
+class InfoPaqueteDto {
   @ApiProperty({
     example: '2.5',
     description: 'Peso del paquete en kilogramos (separado por punto)',
   })
   @IsString()
-  weight!: string;
+  peso!: string;
 
   @ApiProperty({
     example: '15',
     description: 'Alto del paquete en centímetros',
   })
   @IsString()
-  height!: string;
+  alto!: string;
 
   @ApiProperty({
     example: '25',
     description: 'Ancho del paquete en centímetros',
   })
   @IsString()
-  width!: string;
+  ancho!: string;
 
   @ApiProperty({
     example: '35',
     description: 'Largo del paquete en centímetros',
   })
   @IsString()
-  length!: string;
+  largo!: string;
 }
 
 /**
  * DTO para solicitar cotización de envío.
  * Puede usar códigos DPA (legacy) o countyCode de Chilexpress directamente.
  */
-export class QuoteRequestDto {
+export class SolicitudCotizacionDto {
   @ApiPropertyOptional({
     example: '13101',
     description:
-      'Código DPA de la comuna de origen (ej: 13101 = Santiago, 05109 = Viña del Mar). Usar solo si no se envía originCountyCode',
+      'Código DPA de la comuna de origen (ej: 13101 = Santiago, 05109 = Viña del Mar). Usar solo si no se envía codigo_cobertura_origen',
   })
   @IsString()
   @IsOptional()
-  originCommuneId?: string;
+  comuna_origen_id?: string;
 
   @ApiPropertyOptional({
     example: '05109',
     description:
-      'Código DPA de la comuna de destino (ej: 13101 = Santiago, 05109 = Viña del Mar). Usar solo si no se envía destinationCountyCode',
+      'Código DPA de la comuna de destino (ej: 13101 = Santiago, 05109 = Viña del Mar). Usar solo si no se envía codigo_cobertura_destino',
   })
   @IsString()
   @IsOptional()
-  destinationCommuneId?: string;
+  comuna_destino_id?: string;
 
   @ApiPropertyOptional({
     example: 'STGO',
     description:
-      'Código de cobertura de Chilexpress para origen (obtenido desde /geo/chilexpress/coverage-areas). Tiene prioridad sobre originCommuneId',
+      'Código de cobertura de Chilexpress para origen (obtenido desde /geo/chilexpress/coverage-areas). Tiene prioridad sobre comuna_origen_id',
   })
   @IsString()
   @IsOptional()
-  originCountyCode?: string;
+  codigo_cobertura_origen?: string;
 
   @ApiPropertyOptional({
     example: 'VAP',
     description:
-      'Código de cobertura de Chilexpress para destino (obtenido desde /geo/chilexpress/coverage-areas). Tiene prioridad sobre destinationCommuneId',
+      'Código de cobertura de Chilexpress para destino (obtenido desde /geo/chilexpress/coverage-areas). Tiene prioridad sobre comuna_destino_id',
   })
   @IsString()
   @IsOptional()
-  destinationCountyCode?: string;
+  codigo_cobertura_destino?: string;
 
   @ApiProperty({
-    type: PackageInfoDto,
+    type: InfoPaqueteDto,
     description: 'Información del paquete a enviar',
   })
   @ValidateNested()
-  @Type(() => PackageInfoDto)
+  @Type(() => InfoPaqueteDto)
   @IsObject()
-  package!: PackageInfoDto;
+  paquete!: InfoPaqueteDto;
 
   @ApiProperty({
     example: 3,
@@ -96,22 +96,22 @@ export class QuoteRequestDto {
     enum: [1, 3],
   })
   @IsNumber()
-  @IsIn([1, 3], { message: 'productType debe ser 1 (Documento) o 3 (Encomienda)' })
-  productType!: number;
+  @IsIn([1, 3], { message: 'tipo_producto debe ser 1 (Documento) o 3 (Encomienda)' })
+  tipo_producto!: number;
 
   @ApiProperty({
     example: 1,
     description: 'Tipo de contenido del paquete',
   })
   @IsNumber()
-  contentType!: number;
+  tipo_contenido!: number;
 
   @ApiProperty({
     example: '25000',
     description: 'Valor declarado del paquete en pesos chilenos',
   })
   @IsString()
-  declaredWorth!: string;
+  valor_declarado!: string;
 
   @ApiProperty({
     example: 0,
@@ -124,5 +124,5 @@ export class QuoteRequestDto {
   @IsIn([0, 1, 2, 3])
   @Min(0)
   @IsOptional()
-  deliveryTime?: number = 0;
+  tiempo_entrega?: number = 0;
 }

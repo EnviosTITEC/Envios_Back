@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { CitiesService as CitiesService } from './cities.service';
-import { CreateCityDto } from './dto/create-city.dto';
-import { UpdateCityDto } from './dto/update-city.dto';
+import { CrearCiudadDto } from './dto/create-city.dto';
+import { ActualizarCiudadDto } from './dto/update-city.dto';
 
 @Controller('cities')
 export class CitiesController {
   constructor(private readonly cityService: CitiesService) {}
 
   @Post()
-  create(@Body() dto: CreateCityDto) {
+  create(@Body() dto: CrearCiudadDto) {
     return this.cityService.create(dto);
   }
 
@@ -23,7 +23,7 @@ export class CitiesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateCityDto) {
+  update(@Param('id') id: string, @Body() dto: ActualizarCiudadDto) {
     return this.cityService.update(id, dto);
   }
 

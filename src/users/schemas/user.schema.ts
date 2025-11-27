@@ -21,22 +21,65 @@ export interface UserDocument extends User, Document {
 })
 export class User {
   @Prop({ required: true })
-  name: string;
+  nombre: string;
 
   @Prop({ required: true })
-  lastName: string;
+  apellido: string;
 
   @Prop({ required: true, unique: true })
-  email: string;
+  correo: string;
 
   @Prop({ required: true })
-  password: string;
+  contrasena: string;
 
   @Prop({ default: 'user' }) // 'admin' o 'user'
-  role: string;
+  rol: string;
 
   @Prop({ default: true })
-  isActive: boolean;
+  activo: boolean;
+
+  // Compatibility getters/setters (TypeScript) to preserve original property names
+  get name(): string {
+    return (this as any).nombre;
+  }
+  set name(v: string) {
+    (this as any).nombre = v;
+  }
+
+  get lastName(): string {
+    return (this as any).apellido;
+  }
+  set lastName(v: string) {
+    (this as any).apellido = v;
+  }
+
+  get email(): string {
+    return (this as any).correo;
+  }
+  set email(v: string) {
+    (this as any).correo = v;
+  }
+
+  get password(): string {
+    return (this as any).contrasena;
+  }
+  set password(v: string) {
+    (this as any).contrasena = v;
+  }
+
+  get role(): string {
+    return (this as any).rol;
+  }
+  set role(v: string) {
+    (this as any).rol = v;
+  }
+
+  get isActive(): boolean {
+    return (this as any).activo;
+  }
+  set isActive(v: boolean) {
+    (this as any).activo = v;
+  }
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -45,3 +88,52 @@ export const UserSchema = SchemaFactory.createForClass(User);
 UserSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
+
+// Virtuals English -> Spanish para compatibilidad con código existente
+UserSchema.virtual('name')
+  .get(function () {
+    return this.nombre;
+  })
+  .set(function (v) {
+    this.nombre = v;
+  });
+
+UserSchema.virtual('lastName')
+  .get(function () {
+    return this.apellido;
+  })
+  .set(function (v) {
+    this.apellido = v;
+  });
+
+UserSchema.virtual('email')
+  .get(function () {
+    return this.correo;
+  })
+  .set(function (v) {
+    this.correo = v;
+  });
+
+UserSchema.virtual('password')
+  .get(function () {
+    return this.contrasena;
+  })
+  .set(function (v) {
+    this.contrasena = v;
+  });
+
+UserSchema.virtual('role')
+  .get(function () {
+    return this.rol;
+  })
+  .set(function (v) {
+    this.rol = v;
+  });
+
+UserSchema.virtual('isActive')
+  .get(function () {
+    return this.activo;
+  })
+  .set(function (v) {
+    this.activo = v;
+  });

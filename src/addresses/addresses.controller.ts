@@ -1,16 +1,28 @@
 //src/addresses/addresses.controller.ts
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, BadRequestException } from '@nestjs/common';
 import { AddressesService } from './addresses.service';
-import { CreateAddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
+import { CrearDireccionDto } from './dto/create-address.dto';
+import { ActualizarDireccionDto } from './dto/update-address.dto';
+import { plainToInstance } from 'class-transformer';
+import { validateOrReject, ValidationError } from 'class-validator';
+import { mapFrontendAddressToInternal } from '../utils/mappers';
 
 @Controller('addresses')
 export class AddressesController {
   constructor(private readonly addressService: AddressesService) {}
 
   @Post()
-  create(@Body() dto: CreateAddressDto) {
-    return this.addressService.create(dto);
+  async create(@Body() body: any) {
+    const mapped = mapFrontendAddressToInternal(body);
+    const dto = plainToInstance(CrearDireccionDto, mapped);
+    try {
+      await validateOrReject(dto as any, { whitelist: true, forbidUnknownValues: false });
+    } catch (errs) {
+      const messages = (errs as ValidationError[])
+        .flatMap(e => Object.values(e.constraints || {}));
+      throw new BadRequestException(messages);
+    }
+    return this.addressService.create(dto as CrearDireccionDto);
   }
 
   @Get()
@@ -24,8 +36,17 @@ export class AddressesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateAddressDto) {
-    return this.addressService.update(id, dto);
+  async update(@Param('id') id: string, @Body() body: any) {
+    const mapped = mapFrontendAddressToInternal(body);
+    const dto = plainToInstance(ActualizarDireccionDto, mapped);
+    try {
+      await validateOrReject(dto as any, { whitelist: true, forbidUnknownValues: false });
+    } catch (errs) {
+      const messages = (errs as ValidationError[])
+        .flatMap(e => Object.values(e.constraints || {}));
+      throw new BadRequestException(messages);
+    }
+    return this.addressService.update(id, dto as ActualizarDireccionDto);
   }
 
   @Delete(':id')

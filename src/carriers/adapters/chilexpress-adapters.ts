@@ -66,12 +66,16 @@ export class ChilexpressAdapter implements CarrierAdapter {
   }
 
   // -------------------- COTIZACIÓN --------------------
-  async getQuote(payload: ChilexpressQuotePayload) {
+  async getQuote(payload: any) {
+    // Si nos pasan un DTO en español (SolicitudCotizacionDto) mapeamos
+    // internamente al formato que espera Chilexpress.
+    const mapped: ChilexpressQuotePayload = this.mapToChilexpressPayload(payload);
+
     const headers = this.getCredentials('cotizador');
     const url = this.getEndpoint('rating', 'rates/courier');
 
     this.logger.debug(`Chilexpress quote → POST ${url}`);
-    this.logger.debug(`Payload: ${JSON.stringify(payload)}`);
+    this.logger.debug(`Payload: ${JSON.stringify(mapped)}`);
 
     try {
       // Validar que tengamos la API key correcta
@@ -81,7 +85,7 @@ export class ChilexpressAdapter implements CarrierAdapter {
         );
       }
 
-      const response$ = this.httpService.post(url, payload, { headers });
+      const response$ = this.httpService.post(url, mapped, { headers });
       const response = await lastValueFrom(response$);
 
       // Validar la respuesta de Chilexpress
@@ -103,6 +107,42 @@ export class ChilexpressAdapter implements CarrierAdapter {
     } catch (error) {
       return this.handleQuoteError(error);
     }
+  }
+
+  private mapToChilexpressPayload(payload: any): ChilexpressQuotePayload {
+    // Si ya está en formato Chilexpress, devolver tal cual
+    if (
+      payload &&
+      typeof payload === 'object' &&
+      payload.package &&
+      payload.originCountyCode !== undefined
+    ) {
+      return payload as ChilexpressQuotePayload;
+    }
+
+    // Mapeo desde SolicitudCotizacionDto (español, snake_case)
+    // Ejemplos de keys esperadas: codigo_cobertura_origen, comuna_origen_id, paquete, tipo_producto, tipo_contenido, valor_declarado, tiempo_entrega
+    const originCountyCode = payload?.codigo_cobertura_origen || payload?.comuna_origen_id;
+    const destinationCountyCode = payload?.codigo_cobertura_destino || payload?.comuna_destino_id;
+
+    const paquete = payload?.paquete ?? {};
+
+    const mapped: ChilexpressQuotePayload = {
+      originCountyCode: originCountyCode ?? '',
+      destinationCountyCode: destinationCountyCode ?? '',
+      package: {
+        weight: paquete?.peso !== undefined ? String(paquete.peso) : '',
+        height: paquete?.alto !== undefined ? String(paquete.alto) : '',
+        width: paquete?.ancho !== undefined ? String(paquete.ancho) : '',
+        length: paquete?.largo !== undefined ? String(paquete.largo) : '',
+      },
+      productType: payload?.tipo_producto ?? 3,
+      contentType: payload?.tipo_contenido ?? 1,
+      declaredWorth: payload?.valor_declarado !== undefined ? String(payload.valor_declarado) : '',
+      deliveryTime: typeof payload?.tiempo_entrega === 'number' ? payload.tiempo_entrega : 0,
+    };
+
+    return mapped;
   }
 
   private handleQuoteError(error: any) {
