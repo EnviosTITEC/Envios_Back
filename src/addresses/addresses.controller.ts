@@ -1,5 +1,6 @@
 //src/addresses/addresses.controller.ts
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, BadRequestException } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
 import { AddressesService } from './addresses.service';
 import { CrearDireccionDto } from './dto/create-address.dto';
 import { ActualizarDireccionDto } from './dto/update-address.dto';
@@ -12,6 +13,7 @@ export class AddressesController {
   constructor(private readonly addressService: AddressesService) {}
 
   @Post()
+  @ApiBody({ type: CrearDireccionDto, description: 'Datos para crear una dirección' })
   async create(@Body() body: any) {
     const mapped = mapFrontendAddressToInternal(body);
     const dto = plainToInstance(CrearDireccionDto, mapped);
@@ -36,6 +38,7 @@ export class AddressesController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: ActualizarDireccionDto, description: 'Datos para actualizar una dirección' })
   async update(@Param('id') id: string, @Body() body: any) {
     const mapped = mapFrontendAddressToInternal(body);
     const dto = plainToInstance(ActualizarDireccionDto, mapped);

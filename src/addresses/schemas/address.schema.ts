@@ -11,31 +11,31 @@ export type AddressDocument = Address & Document;
 })
 export class Address {
   @Prop({ required: true })
-  calle: string;
+  calle: string; //se usa
 
   @Prop({ required: true })
-  numero: string;
+  numero: string; //se usa
 
   @Prop({ required: true })
-  comuna_id: string;
+  comuna_id: string; //se usa
 
   @Prop()
-  codigo_comuna?: string;
+  codigo_comuna?: string; //se usa
 
   @Prop()
-  provincia?: string;
+  provincia?: string; //no se usa
 
   @Prop({ required: true })
-  region_id: string;
+  region_id: string; //se usa
 
   @Prop()
-  codigo_postal?: string;
+  codigo_postal?: string; //se usa
 
   @Prop()
-  referencias?: string;
+  referencias?: string; //se usa
 
   @Prop({ required: true })
-  usuario_id: string;
+  usuario_id: string; //se usa
 
   // Compatibility getters/setters (TypeScript)
   get street(): string {
