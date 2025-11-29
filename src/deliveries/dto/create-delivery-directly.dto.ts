@@ -51,10 +51,21 @@ class InfoEnvioDto {
   @IsNotEmpty()
   destino_direccion_id: string;
 
+
   @ApiProperty({ example: 'Chilexpress', description: 'Nombre del carrier' })
   @IsString()
   @IsNotEmpty()
   nombre_transportista: string;
+
+  @ApiProperty({ example: 'Av. Providencia', description: 'Calle de la dirección de destino', required: false })
+  @IsString()
+  @IsOptional()
+  calle?: string;
+
+  @ApiProperty({ example: '1234', description: 'Número de la dirección de destino', required: false })
+  @IsString()
+  @IsOptional()
+  numero?: string;
 
   @ApiProperty({ example: 'PRIORITARIO', description: 'Tipo de servicio' })
   @IsString()
