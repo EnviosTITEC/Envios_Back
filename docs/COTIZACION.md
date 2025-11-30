@@ -35,16 +35,16 @@
 
 | Campo | Tipo | Descripción | Requerido | Ejemplo |
 |-------|------|-------------|-----------|---------|
-| `originCommuneId` | string | Código DPA de la comuna de origen | ✅ | "13101" (Santiago) |
-| `destinationCommuneId` | string | Código DPA de la comuna de destino | ✅ | "05109" (Viña del Mar) |
-| `package.weight` | string | Peso en kilogramos (con punto decimal) | ✅ | "2.5" |
-| `package.height` | string | Alto en centímetros | ✅ | "15" |
-| `package.width` | string | Ancho en centímetros | ✅ | "25" |
-| `package.length` | string | Largo en centímetros | ✅ | "35" |
-| `productType` | number | Tipo: 1 = Documento, 3 = Encomienda | ✅ | 3 |
-| `contentType` | number | Tipo de contenido | ✅ | 1 |
-| `declaredWorth` | string | Valor declarado en CLP | ✅ | "25000" |
-| `deliveryTime` | number | 0=Todos, 1=Prioritarios, 2=No prioritarios, 3=Devolución | ❌ | 0 |
+| `originCommuneId` | string | Código DPA de la comuna de origen | YES | "13101" (Santiago) |
+| `destinationCommuneId` | string | Código DPA de la comuna de destino | YES | "05109" (Viña del Mar) |
+| `package.weight` | string | Peso en kilogramos (con punto decimal) | YES | "2.5" |
+| `package.height` | string | Alto en centímetros | YES | "15" |
+| `package.width` | string | Ancho en centímetros | YES | "25" |
+| `package.length` | string | Largo en centímetros | YES | "35" |
+| `productType` | number | Tipo: 1 = Documento, 3 = Encomienda | YES | 3 |
+| `contentType` | number | Tipo de contenido | YES | 1 |
+| `declaredWorth` | string | Valor declarado en CLP | YES | "25000" |
+| `deliveryTime` | number | 0=Todos, 1=Prioritarios, 2=No prioritarios, 3=Devolución | NO | 0 |
 
 ### Response Exitoso
 
@@ -286,3 +286,4 @@ Importar la colección desde `swagger-spec.json` o crear manualmente el request 
 **Desarrollado por:** Giovanni Vásquez  
 **Universidad de Valparaíso** - Gestión de Proyecto Informático  
 **Noviembre 2025**
+

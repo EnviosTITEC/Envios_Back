@@ -88,12 +88,12 @@
     </style>
 </head>
 <body>
-    <h1>🚀 Integración de Envíos con Carrito y Pagos</h1>
+    <h1> Integración de Envíos con Carrito y Pagos</h1>
 
     <h2>Resumen Ejecutivo</h2>
     <p>Nuestro microservicio de Envíos se integra con ustedes para crear automáticamente los envíos cuando un pago se completa. <strong>No necesitan modificar sus bases de datos</strong>, solo implementar algunas llamadas a nuestros endpoints.</p>
 
-    <h2>📊 Flujo General</h2>
+    <h2> Flujo General</h2>
     <div class="flow-box">
 CARRITO → ENVÍOS (frontend) → PAGOS → ENVÍOS (backend) → Notificación Vendedor
     </div>
@@ -135,7 +135,7 @@ CARRITO → ENVÍOS (frontend) → PAGOS → ENVÍOS (backend) → Notificación
 }</code></pre>
 
     <div class="warning">
-        <h3>⚠️ Campo NUEVO requerido: <code>package</code></h3>
+        <h3> Campo NUEVO requerido: <code>package</code></h3>
         <p>Necesitamos que calculen las <strong>dimensiones del paquete</strong> basándose en los productos del carrito:</p>
         <ul>
             <li><strong>weight</strong> (kg): Suma de pesos de todos los productos</li>
@@ -174,10 +174,10 @@ CARRITO → ENVÍOS (frontend) → PAGOS → ENVÍOS (backend) → Notificación
     <pre><code>window.location.href = `https://envios-frontend.com/shipping?cartId=${cartId}`;</code></pre>
 
     <div class="important">
-        <p><span class="checkmark">✅</span> <strong>Eso es todo lo que necesitamos de ustedes.</strong></p>
+        <p><span class="checkmark"></span> <strong>Eso es todo lo que necesitamos de ustedes.</strong></p>
     </div>
 
-    <h2>💳 GRUPO PAGOS - Lo que necesitamos</h2>
+    <h2> GRUPO PAGOS - Lo que necesitamos</h2>
 
     <h3>1. En su FRONTEND de checkout:</h3>
     <p>Cuando el usuario llegue desde nuestro frontend, leer los datos de envío:</p>
@@ -231,7 +231,7 @@ const totalConEnvio = cartTotal + shippingData.estimatedCost;</code></pre>
           quantity: item.cantidad,
           price: item.precio
         })),
-        package: cart.package,  // 👈 Viene del carrito
+        package: cart.package,  //Viene del carrito
         shippingInfo: {
           originAddressId: shippingData.originAddressId,
           destinationAddressId: shippingData.destinationAddressId,
@@ -243,17 +243,17 @@ const totalConEnvio = cartTotal + shippingData.estimatedCost;</code></pre>
     });
     
     const delivery = await response.json();
-    console.log('✅ Envío creado:', delivery.trackingNumber);
+    console.log('Envío creado:', delivery.trackingNumber);
     
     return delivery.trackingNumber;
     
   } catch (error) {
-    console.error('❌ Error creando envío:', error);
+    console.error('Error creando envío:', error);
   }
 }</code></pre>
 
     <div class="important">
-        <p><span class="checkmark">✅</span> <strong>Eso es todo lo que necesitamos de ustedes.</strong></p>
+        <p><span class="checkmark"></span> <strong>Eso es todo lo que necesitamos de ustedes.</strong></p>
     </div>
 
     <h2>🔗 URLs y Configuración</h2>
@@ -310,7 +310,7 @@ CART_SERVICE_URL=http://localhost:4000
 ENVIOS_SERVICE_URL=https://envios.pulgashop.com
 CART_SERVICE_URL=https://carrito.pulgashop.com</code></pre>
 
-    <h2>❓ Preguntas Frecuentes</h2>
+    <h2> Preguntas Frecuentes</h2>
 
     <h3>Q: ¿Tenemos que modificar nuestra base de datos?</h3>
     <p><strong>A:</strong> No, solo usan localStorage/sessionStorage y hacen el POST cuando el pago se completa.</p>
@@ -330,15 +330,15 @@ CART_SERVICE_URL=https://carrito.pulgashop.com</code></pre>
     <h3>Q: ¿Qué pasa si los productos no tienen peso/dimensiones?</h3>
     <p><strong>A:</strong> <strong>Carrito</strong> debe usar valores por defecto razonables (ej: 1kg, 30x20x15cm) o pedirle al grupo de Productos que agreguen esos campos.</p>
 
-    <h2>📦 Documentación Completa</h2>
+    <h2> Documentación Completa</h2>
     <p>Les compartiremos:</p>
     <ul>
-        <li><span class="checkmark">✅</span> <code>docs/CREACION_ENVIOS.md</code> - Documentación técnica completa</li>
-        <li><span class="checkmark">✅</span> <code>docs/COTIZACION.md</code> - Cómo funciona el sistema de cotización</li>
-        <li><span class="checkmark">✅</span> Swagger UI: <code>http://localhost:3000/api</code> - API interactiva para probar</li>
+        <li><span class="checkmark"></span> <code>docs/CREACION_ENVIOS.md</code> - Documentación técnica completa</li>
+        <li><span class="checkmark"></span> <code>docs/COTIZACION.md</code> - Cómo funciona el sistema de cotización</li>
+        <li><span class="checkmark"></span> Swagger UI: <code>http://localhost:3000/api</code> - API interactiva para probar</li>
     </ul>
 
-    <h2>🤝 Siguiente Paso</h2>
+    <h2> Siguiente Paso</h2>
     <p>Confirmen que tienen claro:</p>
     <ol>
         <li><strong>Carrito</strong>: 

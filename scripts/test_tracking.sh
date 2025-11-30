@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 🛰️ Script de Testing de Seguimiento (Tracking)
+# Script de Testing de Seguimiento (Tracking)
 # Uso: bash test_tracking.sh
 
 BASE_URL="http://localhost:3000/api"
@@ -15,11 +15,11 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}🛰️  Test: Seguimiento (Tracking)${NC}"
+echo -e "${BLUE}Test: Seguimiento (Tracking)${NC}"
 echo -e "${BLUE}========================================${NC}\n"
 
 # 1. Crear un envío
-echo -e "${BLUE}1️⃣ Creando envío de prueba...${NC}"
+echo -e "${BLUE}1. Creando envío de prueba...${NC}"
 DELIVERY_RESPONSE=$(curl -s -X POST "$BASE_URL/deliveries/create" \
   -H "Content-Type: application/json" \
   -d '{
@@ -58,15 +58,15 @@ echo "$DELIVERY_RESPONSE" | jq '.'
 TRACKING=$(echo "$DELIVERY_RESPONSE" | jq -r '.trackingNumber' 2>/dev/null)
 
 if [ "$TRACKING" != "null" ] && [ ! -z "$TRACKING" ]; then
-  echo -e "${GREEN}✅ Envío creado exitosamente${NC}"
-  echo -e "${YELLOW}📦 Tracking Number: $TRACKING${NC}\n"
+  echo -e "${GREEN}SUCCESS - Envío creado exitosamente${NC}"
+  echo -e "${YELLOW}Tracking Number: $TRACKING${NC}\n"
 else
-  echo -e "${RED}❌ Error creando envío${NC}\n"
+  echo -e "${RED}ERROR - Error creando envío${NC}\n"
   exit 1
 fi
 
 # 2. Buscar por tracking number
-echo -e "${BLUE}2️⃣ Buscando envío por tracking number...${NC}"
+echo -e "${BLUE}2. Buscando envío por tracking number...${NC}"
 echo -e "${YELLOW}URL: GET $BASE_URL/deliveries/tracking/$TRACKING${NC}\n"
 
 TRACKING_RESPONSE=$(curl -s -X GET "$BASE_URL/deliveries/tracking/$TRACKING")
@@ -78,14 +78,14 @@ echo "$TRACKING_RESPONSE" | jq '.'
 FOUND_TRACKING=$(echo "$TRACKING_RESPONSE" | jq -r '.trackingNumber' 2>/dev/null)
 
 if [ "$FOUND_TRACKING" = "$TRACKING" ]; then
-  echo -e "\n${GREEN}✅ ¡Búsqueda exitosa! El envío fue encontrado correctamente.${NC}"
+  echo -e "\n${GREEN}SUCCESS - Búsqueda exitosa! El envío fue encontrado correctamente.${NC}"
 else
-  echo -e "\n${RED}❌ Error en la búsqueda${NC}\n"
+  echo -e "\n${RED}ERROR - Error en la búsqueda${NC}\n"
   exit 1
 fi
 
 # 3. Intentar buscar con un tracking inválido
-echo -e "\n${BLUE}3️⃣ Intentando buscar con tracking inválido...${NC}"
+echo -e "\n${BLUE}3. Intentando buscar con tracking inválido...${NC}"
 INVALID_TRACKING="ENV-INVALID-12345"
 echo -e "${YELLOW}URL: GET $BASE_URL/deliveries/tracking/$INVALID_TRACKING${NC}\n"
 
@@ -100,11 +100,11 @@ echo -e "${GREEN}Response:${NC}"
 echo "$RESPONSE_BODY" | jq '.'
 
 if [ "$HTTP_CODE" = "404" ]; then
-  echo -e "\n${GREEN}✅ Comportamiento correcto: Retorna 404 para tracking inválido${NC}"
+  echo -e "\n${GREEN}Test correcto: Retorna 404 para tracking inválido${NC}"
 else
-  echo -e "\n${RED}⚠️  Comportamiento inesperado: Esperaba 404, recibió $HTTP_CODE${NC}"
+  echo -e "\n${RED}Comportamiento inesperado: Esperaba 404, recibió $HTTP_CODE${NC}"
 fi
 
 echo -e "\n${BLUE}========================================${NC}"
-echo -e "${GREEN}✨ Testing completo!${NC}"
+echo -e "${GREEN}Testing completo!${NC}"
 echo -e "${BLUE}========================================${NC}\n"

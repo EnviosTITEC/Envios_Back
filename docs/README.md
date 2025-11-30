@@ -2,7 +2,7 @@
 
 Este proyecto es un backend desarrollado con NestJS y MongoDB para el template GPI de la Universidad de Valparaíso. El backend proporciona una API RESTful que se integra con el frontend React, ofreciendo funcionalidades de autenticación y gestión de usuarios.
 
-## 🚀 Tecnologías
+## Tecnologías
 
 Este backend utiliza las siguientes tecnologías:
 
@@ -15,14 +15,14 @@ Este backend utiliza las siguientes tecnologías:
 - **Class Validator**: Validación de datos basada en decoradores
 - **bcrypt**: Librería para hashear contraseñas
 
-## 🎨 Diseño (UI/UX)
+## Diseño (UI/UX)
 
 Los mockups y prototipos para el frontend están disponibles en Figma:
 
-👉 [Ver mockups en Figma](https://www.figma.com/design/aSzfltXTlqDjB4kaRq91Ue/Untitled?node-id=0-1&t=EUo6JxVxO675sISn-1)
+[Ver mockups en Figma](https://www.figma.com/design/aSzfltXTlqDjB4kaRq91Ue/Untitled?node-id=0-1&t=EUo6JxVxO675sISn-1)
 
 
-## 📁 Estructura de Carpetas
+## Estructura de Carpetas
 
 ```
 backend/
@@ -60,7 +60,7 @@ backend/
 └── tsconfig.json                    # Configuración de TypeScript
 ```
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 ### Módulos
 
@@ -87,7 +87,7 @@ La autenticación está implementada usando JWT (JSON Web Tokens):
 3. El cliente almacena el token y lo incluye en cada solicitud
 4. Los guards verifican el token para proteger las rutas
 
-## ⚙️ Instalación y Configuración
+## Instalación y Configuración
 
 ### Requisitos Previos
 
@@ -163,7 +163,7 @@ La autenticación está implementada usando JWT (JSON Web Tokens):
   pnpm start:prod
   ```
 
-## 🌐 API Endpoints
+## API Endpoints
 
 ### Autenticación
 
@@ -194,7 +194,7 @@ La autenticación está implementada usando JWT (JSON Web Tokens):
 - **PATCH /api/users/:id**: Actualizar un usuario (requiere token JWT)
 - **DELETE /api/users/:id**: Eliminar un usuario (requiere token JWT)
 
-## 🔄 Integración con el Frontend
+## Integración con el Frontend
 
 Para integrar este backend con el frontend React:
 
@@ -235,7 +235,7 @@ Para integrar este backend con el frontend React:
    };
    ```
 
-## 🧠 Conceptos Clave para Estudiantes
+## Conceptos Clave para Estudiantes
 
 ### DTO (Data Transfer Object)
 
@@ -319,7 +319,7 @@ export class AuthService {
 }
 ```
 
-## 🛠️ Personalización y Extensión
+## Personalización y Extensión
 
 ### Añadir un Nuevo Módulo
 
@@ -339,7 +339,7 @@ export class AuthService {
 2. Implementa la lógica de autorización
 3. Aplica el guard a nivel de controlador o ruta
 
-## ⚠️ Notas Importantes
+## Notas Importantes
 
 - Este backend está diseñado para desarrollo local. Para producción, se deben implementar medidas de seguridad adicionales.
 - El secreto JWT debe mantenerse seguro y cambiarse en un entorno de producción.
@@ -349,3 +349,5 @@ export class AuthService {
 ---
 
 Desarrollado para la asignatura de Gestión de Proyecto Informático - Diego Monsalves - René Noël - Universidad de Valparaíso
+
+

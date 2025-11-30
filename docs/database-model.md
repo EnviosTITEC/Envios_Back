@@ -102,3 +102,4 @@ Nota: para nuevas tablas se utiliza la nomenclatura `user_id` (snake_case, espa�
 - Opcional: `.json` de exportación por colección usando `mongoexport`.
 
 Si quieres, genero también un `.png` con el diagrama ER simple o exporto las estructuras JSON a un archivo separado. ¿Quieres que lo haga?
+

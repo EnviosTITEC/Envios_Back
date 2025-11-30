@@ -1,4 +1,4 @@
-# 📦 Modelo de Datos — PulgaShop (Microservicio Envíos)
+# Modelo de Datos — PulgaShop (Microservicio Envíos)
 
 ## users
 ```json
@@ -73,3 +73,4 @@
   "updatedAt": "Date"
 }
 ```
+
