@@ -194,6 +194,9 @@ export class DeliveriesService {
         alto: dto.paquete.alto,
       },
       valor_declarado: dto.valor_declarado || 0,
+      // Guardar calle y número si vienen en el payload
+      calle: dto.informacion_envio.calle || "",
+      numero: dto.informacion_envio.numero || "",
       fragil: false,
       articulos: dto.articulo_carrito,
       fecha_entrega_estimada: estimatedDeliveryDate,

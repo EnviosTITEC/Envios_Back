@@ -7,95 +7,12 @@ import { CrearEnvioDesdePagoDto } from './dto/create-delivery-from-payment.dto';
 import { CrearEnvioDirectoDto } from './dto/create-delivery-directly.dto';
 import { RespuestaEnvioDto } from './dto/delivery-response.dto';
 
-@ApiTags('deliveries')
+@ApiTags('Deliveries')
 @Controller('deliveries')
 export class DeliveriesController {
   constructor(private readonly deliveryService: DeliveriesService) {}
 
-  /**
-   * Webhook para crear envío cuando el pago se completa
-   * Este endpoint será llamado por el microservicio de Pagos
-   */
-  @Post('create-from-payment')
-  @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ 
-    summary: 'Crear envío desde pago completado',
-    description: 'Endpoint llamado automáticamente por el microservicio de Pagos cuando un pago se completa. Crea el envío con estado "Preparando" y genera el tracking number.'
-  })
-  @ApiBody({
-    type: CrearEnvioDesdePagoDto,
-    description: 'Datos del pago y envío',
-    examples: {
-      example1: {
-        summary: 'Ejemplo completo',
-        value: {
-          paymentId: 'pay_abc123',
-          cartId: 'cart_xyz789',
-          userId: 'user_456',
-          sellerId: 'seller_789',
-          totalAmount: 950000,
-          items: [
-            {
-              productId: 'prod_12345',
-              name: 'iPhone 14 Pro 256GB',
-              quantity: 1,
-              price: 899990
-            }
-          ],
-          package: {
-            weight: 0.5,
-            length: 20,
-            width: 15,
-            height: 10
-          },
-          shippingInfo: {
-            originAddressId: 'addr_origin_123',
-            destinationAddressId: 'addr_dest_456',
-            carrierName: 'Chilexpress',
-            serviceType: 'PRIORITARIO',
-            estimatedCost: 8812
-          },
-          declaredWorth: 50000,
-          notes: 'Entregar en horario de oficina'
-        }
-      }
-    }
-  })
-  @ApiResponse({ 
-    status: 201, 
-    description: 'Envío creado exitosamente',
-    type: RespuestaEnvioDto,
-    example: {
-      trackingNumber: 'ENV-1734480000000-A3B7F9',
-      status: 'Preparando',
-      paymentId: 'pay_abc123',
-      cartId: 'cart_xyz789',
-      userId: 'user_456',
-      sellerId: 'seller_789',
-      carrierName: 'Chilexpress',
-      serviceType: 'PRIORITARIO',
-      estimatedCost: 8812,
-      currency: 'CLP',
-      originAddressId: 'addr_origin_123',
-      destinationAddressId: 'addr_dest_456',
-      items: [
-        {
-          productId: 'prod_12345',
-          name: 'iPhone 14 Pro 256GB',
-          quantity: 1,
-          price: 899990
-        }
-      ],
-      estimatedDeliveryDate: '2024-12-18T10:00:00Z',
-      createdAt: '2024-12-17T15:30:00Z',
-      message: 'Envío creado exitosamente. El vendedor ha sido notificado.'
-    }
-  })
-  @ApiResponse({ status: 400, description: 'Datos inválidos o envío ya existe para este pago' })
-  @ApiResponse({ status: 500, description: 'Error al crear el envío' })
-  async createFromPayment(@Body() dto: CrearEnvioDesdePagoDto): Promise<RespuestaEnvioDto> {
-    return this.deliveryService.createFromPayment(dto);
-  }
+
 
   /**
    * Crear envío directamente desde el frontend (para flujo de cotización)
@@ -113,32 +30,47 @@ export class DeliveriesController {
       example1: {
         summary: 'Ejemplo de creación directa',
         value: {
-          userId: 'user_456',
-          sellerId: 'seller_789',
-          cartId: 'cart_xyz789',
-          items: [
+          usuario_id: 'user_456',
+          vendedor_id: 'STGO',
+          carrito_id: 'cart-1764464473687',
+          pago_id: 'pendiente',
+          articulo_carrito: [
             {
-              productId: 'prod_12345',
-              name: 'iPhone 14 Pro 256GB',
-              quantity: 1,
-              price: 899990
+              producto_id: 'prod_001',
+              nombre: 'iPhone 14 Pro',
+              cantidad: 1,
+              precio: 899990
+            },
+            {
+              producto_id: 'prod_002',
+              nombre: 'Samsung Galaxy S23',
+              cantidad: 1,
+              precio: 799990
+            },
+            {
+              producto_id: 'prod_003',
+              nombre: 'AirPods Pro',
+              cantidad: 2,
+              precio: 299990
             }
           ],
-          package: {
-            weight: 0.5,
-            length: 20,
-            width: 15,
-            height: 10
+          paquete: {
+            peso: 1.3,
+            largo: 22,
+            ancho: 16,
+            alto: 12
           },
-          shippingInfo: {
-            originAddressId: 'addr_origin_123',
-            destinationAddressId: 'addr_dest_456',
-            carrierName: 'Chilexpress',
-            serviceType: 'PRIORITARIO',
-            estimatedCost: 8812
+          informacion_envio: {
+            origen_direccion_id: 'STGO',
+            destino_direccion_id: 'CALA',
+            nombre_transportista: 'EXPRESS',
+            tipo_servicio: 'EXPRESS',
+            costo_estimado: 13897,
+            calle: 'test',
+            numero: '111'
           },
-          declaredWorth: 50000,
-          notes: 'Entregar en horario de oficina'
+          valor_declarado: 2299960,
+          notas: 'Creado desde frontend'
         }
       }
     }

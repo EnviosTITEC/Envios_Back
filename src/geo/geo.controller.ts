@@ -12,15 +12,6 @@ import {
 export class GeoController {
   constructor(private readonly geoService: GeoService) {}
 
-  @Get('/cl/regions')
-  @ApiOperation({
-    summary: 'Obtener regiones de Chile',
-    description: 'Obtiene regiones, provincias y comunas',
-  })
-  async getRegions(): Promise<GeoRegion[]> {
-    return this.geoService.getRegions();
-  }
-
   @Get('/chilexpress/regions')
   @ApiOperation({
     summary: 'Obtener regiones de Chilexpress',

@@ -1,3 +1,4 @@
+// ...existing code...
 // delivery.schema.ts
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -21,6 +22,11 @@ export enum DeliverySpeed {
 
 @Schema({ collection: 'deliveries', timestamps: true, toJSON: { virtuals: true } })
 export class Delivery {
+    @Prop()
+    calle: string;
+
+    @Prop()
+    numero: string;
   // Tracking y estado
   @Prop({ required: true, unique: true, index: true })
   numero_seguimiento: string;

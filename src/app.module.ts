@@ -4,8 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { UsersModule } from './users/users.module';
 import { AddressModule } from './addresses/addresses.module';
-import { CityModule as CountriesModule } from './cities/cities.module';
 import { CarriersModule } from './carriers/carriers.module';
+import { QuotesModule } from './quotes/quotes.module';
 import { DeliveriesModule } from './deliveries/deliveries.module';
 import { GeoModule } from './geo/geo.module'; // <-- asegúrate que este import exista
 
@@ -28,8 +28,8 @@ import { GeoModule } from './geo/geo.module'; // <-- asegúrate que este import 
     // módulos de la app
     UsersModule,
     AddressModule,
-    CountriesModule,
     CarriersModule,
+    QuotesModule,
     DeliveriesModule,
     GeoModule,
   ],
