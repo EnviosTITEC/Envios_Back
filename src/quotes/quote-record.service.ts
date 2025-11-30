@@ -15,4 +15,8 @@ export class QuoteRecordService {
   async findById(id: string) {
     return this.quoteRecordModel.findById(id);
   }
+
+  async findAll() {
+    return this.quoteRecordModel.find();
+  }
 }

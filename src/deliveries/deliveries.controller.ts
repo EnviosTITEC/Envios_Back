@@ -30,32 +30,47 @@ export class DeliveriesController {
       example1: {
         summary: 'Ejemplo de creación directa',
         value: {
-          userId: 'user_456',
-          sellerId: 'seller_789',
-          cartId: 'cart_xyz789',
-          items: [
+          usuario_id: 'user_456',
+          vendedor_id: 'STGO',
+          carrito_id: 'cart-1764464473687',
+          pago_id: 'pendiente',
+          articulo_carrito: [
             {
-              productId: 'prod_12345',
-              name: 'iPhone 14 Pro 256GB',
-              quantity: 1,
-              price: 899990
+              producto_id: 'prod_001',
+              nombre: 'iPhone 14 Pro',
+              cantidad: 1,
+              precio: 899990
+            },
+            {
+              producto_id: 'prod_002',
+              nombre: 'Samsung Galaxy S23',
+              cantidad: 1,
+              precio: 799990
+            },
+            {
+              producto_id: 'prod_003',
+              nombre: 'AirPods Pro',
+              cantidad: 2,
+              precio: 299990
             }
           ],
-          package: {
-            weight: 0.5,
-            length: 20,
-            width: 15,
-            height: 10
+          paquete: {
+            peso: 1.3,
+            largo: 22,
+            ancho: 16,
+            alto: 12
           },
-          shippingInfo: {
-            originAddressId: 'addr_origin_123',
-            destinationAddressId: 'addr_dest_456',
-            carrierName: 'Chilexpress',
-            serviceType: 'PRIORITARIO',
-            estimatedCost: 8812
+          informacion_envio: {
+            origen_direccion_id: 'STGO',
+            destino_direccion_id: 'CALA',
+            nombre_transportista: 'EXPRESS',
+            tipo_servicio: 'EXPRESS',
+            costo_estimado: 13897,
+            calle: 'test',
+            numero: '111'
           },
-          declaredWorth: 50000,
-          notes: 'Entregar en horario de oficina'
+          valor_declarado: 2299960,
+          notas: 'Creado desde frontend'
         }
       }
     }
