@@ -36,10 +36,8 @@ async function bootstrap() {
   console.log(`Aplicación ejecutándose en: http://localhost:${port}/api`);
   console.log(`Swagger disponible en: http://localhost:${port}/api-docs`);
 
-  if (process.env.NODE_ENV === 'development'){
-    const fs = require("fs");
-    fs.writeFileSync("./swagger-spec.json", JSON.stringify(document));
-  }
+  const fs = require("fs");
+  fs.writeFileSync("./swagger-spec.json", JSON.stringify(document, null, 2));
 }
 
 bootstrap();
