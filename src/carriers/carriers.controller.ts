@@ -16,33 +16,5 @@ export class CarriersController {
 
 
 
-  @Post()
-  @ApiOperation({ summary: 'Crear un nuevo carrier' })
-  create(@Body() dto: CrearTransportistaDto) {
-    return this.carriersService.create(dto);
-  }
 
-  @Get()
-  @ApiOperation({ summary: 'Listar todos los carriers' })
-  findAll() {
-    return this.carriersService.findAll();
-  }
-
-  @Get(':id')
-  @ApiOperation({ summary: 'Obtener carrier por ID' })
-  findById(@Param('id') id: string) {
-    return this.carriersService.findById(id);
-  }
-
-  @Patch(':id')
-  @ApiOperation({ summary: 'Actualizar carrier' })
-  update(@Param('id') id: string, @Body() dto: ActualizarTransportistaDto) {
-    return this.carriersService.update(id, dto);
-  }
-
-  @Delete(':id')
-  @ApiOperation({ summary: 'Eliminar carrier' })
-  delete(@Param('id') id: string) {
-    return this.carriersService.delete(id);
-  }
 }
