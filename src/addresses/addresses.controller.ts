@@ -13,7 +13,25 @@ export class AddressesController {
   constructor(private readonly addressService: AddressesService) {}
 
   @Post()
-  @ApiBody({ type: CrearDireccionDto, description: 'Datos para crear una dirección' })
+  @ApiBody({
+    type: CrearDireccionDto,
+    description: 'Datos para crear una dirección',
+    examples: {
+      ejemplo1: {
+        summary: 'Dirección completa',
+        value: {
+          "calle": "General Cruz",
+          "numero": "222",
+          "comuna_id": "VALPARAISO",
+          "codigo_comuna": "PLAS",
+          "region_id": "VALPARAISO",
+          "codigo_postal": "",
+          "referencias": "",
+          "usuario_id": "1"
+        }
+      }
+    }
+  })
   async create(@Body() body: any) {
     const mapped = mapFrontendAddressToInternal(body);
     const dto = plainToInstance(CrearDireccionDto, mapped);
