@@ -217,7 +217,7 @@
    → Si falla (sandbox): muestra error
    ```
 
-4. **Usuario selecciona opción y crea envío** ✨
+4. **Usuario selecciona opción y crea envío**
    ```
    POST /api/deliveries/create
    {userId, items[], package{}, shippingInfo{...}}
@@ -227,7 +227,7 @@
    → Devuelve tracking + detalles
    ```
 
-5. **Usuario ve en "Mis Envíos"** ✨
+5. **Usuario ve en "Mis Envíos"**
    ```
    GET /api/deliveries/user/user_456
    ↓

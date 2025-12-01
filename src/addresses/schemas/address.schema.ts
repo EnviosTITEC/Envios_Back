@@ -86,6 +86,13 @@ export class Address {
   set userId(v: string) {
     (this as any).usuario_id = v;
   }
+
+  get regionId(): string {
+    return (this as any).region_id;
+  }
+  set regionId(v: string) {
+    (this as any).region_id = v;
+  }
 }
 
 export const AddressSchema = SchemaFactory.createForClass(Address);
@@ -156,4 +163,12 @@ AddressSchema.virtual('userId')
   })
   .set(function (v) {
     this.usuario_id = v;
+  });
+
+AddressSchema.virtual('regionId')
+  .get(function () {
+    return this.region_id;
+  })
+  .set(function (v) {
+    this.region_id = v;
   });

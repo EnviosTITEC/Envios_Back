@@ -365,3 +365,4 @@ http://localhost:3000/api
 3. Frontend: Vista "Mis Envíos"
 4. Frontend: Integrar cotización con Chilexpress
 5. Pruebas end-to-end
+

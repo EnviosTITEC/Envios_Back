@@ -1,16 +1,8 @@
 #!/usr/bin/env node
-/*
- Simple seeder for users + addresses. Usage:
-  node scripts/seed_fake_data.js 10
-
- It reads MONGODB_URI from .env or environment and inserts N mock users and 1-3 addresses each.
-*/
 const mongoose = require('mongoose');
 const fs = require('fs');
-// use dotenv to parse .env reliably
 try { require('dotenv').config(); } catch (e) { /* ignore if not installed */ }
 
-// Prefer env var parsed by dotenv, fallback to simple file parse
 function loadMongoUri() {
   if (process.env.MONGODB_URI) return process.env.MONGODB_URI;
   if (fs.existsSync('.env')) {

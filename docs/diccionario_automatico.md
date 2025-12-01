@@ -201,3 +201,4 @@ Nota: para cada schema se muestran propiedades, tipo, requerido y ejemplo/descri
 - Recomendación: revisar `components/schemas` en `swagger-spec.json` para detalles completos (ejemplos, descripciones) y para generar clientes/contratos automáticos.
 
 
+
